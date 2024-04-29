@@ -11,7 +11,7 @@ def create_app():
     app = Flask(__name__)
 
     # configure the database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cars.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///vehicles.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)

@@ -1,3 +1,4 @@
+import json
 from random import randint
 
 from flask import jsonify
@@ -5,7 +6,6 @@ from flask_restx import Namespace, Resource, fields
 
 from src.database import db
 from src.model.vehicle import Vehicle
-from src.model.garage import Garage
 
 vehicle_api = Namespace('vehicle', description='Vehicle related operations')
 
@@ -14,11 +14,11 @@ vehicle_api = Namespace('vehicle', description='Vehicle related operations')
 vehicle_model = vehicle_api.model('Vehicle', {
     "make": fields.String(required=True, description='The make of the vehicle'),
     "model": fields.String(required=True, description='The model of the vehicle'),
-    "year": fields.Integer(required=False, description='The year of the vehicle'),
-    "color": fields.String(required=False, description='The color of the vehicle'),
+    "year": fields.Integer(required=True, description='The year of the vehicle'),
+    "color": fields.String(required=True, description='The color of the vehicle'),
     "price": fields.Float(required=False, description='The estimated price of the vehicle'),
     "type": fields.String(required=False, description='The type of vehicle'),
-    "milage": fields.Integer(required=False, description='The milage of the vehicle'),
+    "mileage": fields.Integer(required=False, description='The milage of the vehicle'),
 })
 
 
@@ -33,6 +33,7 @@ class VehicleList(Resource):
     def post(self):
         id = randint(0,9999999999) #todo check for the id not to repeat
 
+        # eventually this should get this data from the temp files
         new_vehicle = Vehicle(id=id,
                               make=vehicle_api.payload["make"],
                               model=vehicle_api.payload["model"],
@@ -40,14 +41,21 @@ class VehicleList(Resource):
                               color=vehicle_api.payload["color"],
                               price=vehicle_api.payload["price"],
                               type=vehicle_api.payload["type"],
-                              mileage=vehicle_api.payload['milage'])
-        db.session.add(new_vehicle)
-        db.session.commit()
+                              mileage=vehicle_api.payload['mileage'])
+
+        Vehicle.add_vehicle(new_vehicle)
         return new_vehicle, 201
 
     @vehicle_api.marshal_with(vehicle_model, envelope='vehicle')
     def get(self): # shows all vehicles
-        return Garage.query.all()
+
+        vehicles = Vehicle.get_vehicles()
+        vehicles_json = [v.dict_data() for v in vehicles]
+
+        with open("src/temp_files/temp.json", "w") as f:
+            f.write(json.dumps(vehicles_json,indent=4))
+
+        return vehicles_json
 
 
 

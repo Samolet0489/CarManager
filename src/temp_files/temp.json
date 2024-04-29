@@ -1,0 +1,22 @@
+[
+    {
+        "id": 2066915597,
+        "make": "BMW",
+        "model": "m3 e42",
+        "year": 2004,
+        "color": "blue",
+        "price": 3000.0,
+        "type": "coupe",
+        "mileage": 93000.0
+    },
+    {
+        "id": 4790516260,
+        "make": "Honda",
+        "model": "Civic",
+        "year": 2009,
+        "color": "Red",
+        "price": 7000.0,
+        "type": "sports car",
+        "mileage": 140000.0
+    }
+]

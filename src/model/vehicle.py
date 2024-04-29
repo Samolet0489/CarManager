@@ -15,8 +15,8 @@ class Vehicle(db.Model):
     type = db.Column(db.String(30), nullable=False)
     mileage = db.Column(db.Float, nullable=False)
 
-    def repr(self):  # This makes it into a string reperesentation
-        return f'<Vehicle {self.make} {self.model}>'
+    # def repr(self):  # This makes it into a string reperesentation
+    #     return f'Vehicle {self.make} {self.model}'
 
 
     #todo make sure that the model fits this
@@ -31,9 +31,21 @@ class Vehicle(db.Model):
         self.mileage = mileage
         # other info
 
+    def dict_data(self):
+        return {
+            'id': self.id,
+            'make': self.make,
+            'model': self.model,
+            'year': self.year,
+            'color': self.color,
+            'price': self.price,
+            'type': self.type,
+            'mileage': self.mileage
+        }
 
-    def add_vehicle(self, new_vehicle):
-        db.session.add(new_vehicle)
+
+    def add_vehicle(self):
+        db.session.add(self)
         db.session.commit()
 
 
