@@ -1,4 +1,7 @@
 
+#get started on the basic react model for the front end. Good luck.
+
+#################################
 290424:
 Lost the old todoFile for some reason
 
@@ -19,3 +22,4 @@ s1 is connected to s2 with a middle (temp file folder)
 
 s2 is the only one who gets to work with data
 s1 only does the front end
+
