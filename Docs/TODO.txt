@@ -1,0 +1,4 @@
+290424:
+
+Making the app and the essentials
+wrote comments on everything that might be needed
