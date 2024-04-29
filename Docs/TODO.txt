@@ -1,4 +1,21 @@
-290424:
+
+################
+TO_READ: |links to useful info|
+https://flask.palletsprojects.com/en/3.0.x/patterns/sqlite3/
+https://realpython.com/flask-javascript-frontend-for-rest-api/
+################
+
+TODO DOCUMENT EVERYTHING!!!!!!!!!!!!!!!!!! Write comments
+
+290424:###########################################################
+TODO: BEFORE A COMMIT MAKE SURE THAT YOU HAVE SELECTED THE CORRECT FILES
+the  .idea files should not go on github
 
 Making the app and the essentials
 wrote comments on everything that might be needed
+
+careful on the push
+
+TODO: learn how to adopt the front end using JS and HTML (unfortunately its not possible directly)
+research it on google
+
