@@ -1,4 +1,14 @@
 
+300424:
+there might be a massive problem with the fact that we might need
+
+-frontend
+--react data comes here
+-backend
+--src
+---python back end
+
+
 #get started on the basic react model for the front end. Good luck.
 
 #################################
