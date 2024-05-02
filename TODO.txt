@@ -1,13 +1,49 @@
 
+
+
+
+
+###############################################################
+toilet brake:
+rn the get is broken fix it.....!
+IT took me half an hour of getting the same error coz I discarded the changes every time is dropped the table
+TODO: SAVE THE CHANGES AFTER DROPPING THE TABLE TO ENSURE CLEAN TESTING!!!
+##################################################################
 020524:
+
+##############################################
+
+FIX!: right now on get_vehicle data it does not get the fuel consumption
+
+so that we can see the fuel consumption
+
+
+
+
+
+
+#################################################
 Clean up the required data so that we dont collect pointless stuff
 
-needed:
-milage
-fuel consumption
-mechanic
-owner
+officially claimed:
+milage              - Added
+fuel consumption    - Added
+mechanic            - Pointless [removed]
+owner               - Pointless [removed]
 important dates = [] or {}
+
+current:
+self.id = id
+self.name = name # here people can call their vehicle however they want
+self.color = color  # people can set the exact color of the vehicle (in case of an accident the mechanic knows the paint)
+self.expenses = expenses # total expenses (just adding up all expenses ever accumulated)
+self.mileage = mileage
+self.fuel_consumption = 0 # TODO: can you make it calculate it based on fill up data?
+self.note = note # people can write a note with additional information about the car
+
+data has been cleaned up: 17:38
+##################################################################
+
 
 
 
@@ -46,3 +82,14 @@ s1 is connected to s2 with a middle (temp file folder)
 s2 is the only one who gets to work with data
 s1 only does the front end
 
+
+Test Data:
+Create:
+{
+  "name": "Honda FMX650 2005",
+  "color": "black",
+  "expenses": 5000,
+  "mileage": 43000,
+  "fuel_consumption": 5.4,
+  "note": "This is my motorcycle :D"
+}

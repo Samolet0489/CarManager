@@ -1,10 +1,8 @@
 import json
 from random import randint
 
-from flask import jsonify
 from flask_restx import Namespace, Resource, fields
 
-from src.database import db
 from src.model.vehicle import Vehicle
 
 vehicle_api = Namespace('vehicle', description='Vehicle related operations')
@@ -12,13 +10,11 @@ vehicle_api = Namespace('vehicle', description='Vehicle related operations')
 
 #TODO: this will have to modified (this is random things for testing)
 vehicle_model = vehicle_api.model('Vehicle', {
-    "make": fields.String(required=True, description='The make of the vehicle'),
-    "model": fields.String(required=True, description='The model of the vehicle'),
-    "year": fields.Integer(required=True, description='The year of the vehicle'),
+    "name": fields.String(required=True, description='Give the vehicle a name'),
     "color": fields.String(required=True, description='The color of the vehicle'),
-    "price": fields.Float(required=False, description='The estimated price of the vehicle'),
-    "type": fields.String(required=False, description='The type of vehicle'),
-    "mileage": fields.Integer(required=False, description='The milage of the vehicle'),
+    "expenses": fields.Float(required=False, description='The total expenses of the vehicle'),
+    "mileage": fields.Integer(required=True, description='The milage of the vehicle'),
+    "note": fields.String(required=False, description='Additional notes about the vehicle'),
 })
 
 
@@ -35,13 +31,11 @@ class VehicleList(Resource):
 
         # eventually this should get this data from the temp files
         new_vehicle = Vehicle(id=id,
-                              make=vehicle_api.payload["make"],
-                              model=vehicle_api.payload["model"],
-                              year=vehicle_api.payload["year"],
+                              name=vehicle_api.payload["name"],
                               color=vehicle_api.payload["color"],
-                              price=vehicle_api.payload["price"],
-                              type=vehicle_api.payload["type"],
-                              mileage=vehicle_api.payload['mileage'])
+                              expenses=vehicle_api.payload["expenses"],
+                              mileage=vehicle_api.payload['mileage'],
+                              note=vehicle_api.payload["note"])
 
         Vehicle.add_vehicle(new_vehicle)
         return new_vehicle, 201
@@ -51,9 +45,9 @@ class VehicleList(Resource):
 
         vehicles = Vehicle.get_vehicles()
         vehicles_json = [v.dict_data() for v in vehicles]
-
-        with open("src/temp_files/temp.json", "w") as f:
-            f.write(json.dumps(vehicles_json,indent=4))
+        #
+        # with open("src/temp_files/temp.json", "w") as f:
+        #     f.write(json.dumps(vehicles_json,indent=4))
 
         return vehicles_json
 

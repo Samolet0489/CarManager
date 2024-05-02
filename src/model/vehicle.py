@@ -7,40 +7,37 @@ class Vehicle(db.Model):
 
     __tablename__ = 'garage'
     id = db.Column(db.Integer, primary_key=True)
-    make = db.Column(db.String(30), nullable=False)
-    model = db.Column(db.String(30), nullable=False)
-    year = db.Column(db.Integer, nullable=False)
+    name = db.Column(db.String(30), nullable=False)
     color= db.Column(db.String(30), nullable=False)
-    price = db.Column(db.Float, nullable=False)
-    type = db.Column(db.String(30), nullable=False)
+    expenses = db.Column(db.Float, nullable=False)
     mileage = db.Column(db.Float, nullable=False)
+    fuel_consumption = db.Column(db.Float, nullable=False)
+    note = db.Column(db.String(500), nullable=True)
 
-    # def repr(self):  # This makes it into a string reperesentation
+    # def repr(self):  # This makes it into a string representation
     #     return f'Vehicle {self.make} {self.model}'
 
 
     #todo make sure that the model fits this
-    def __init__(self, id:int,make:str, model:str, year:int, color:str, price:float, type:str, mileage:float):
+    def __init__(self, id:int,name:str, color:str, expenses:float, mileage:float, note:str):
         self.id = id
-        self.make = make
-        self.model = model
-        self.year = year
-        self.color = color
-        self.price = price
-        self.type = type
+        self.name = name # here people can call their vehicle however they want
+        self.color = color  # people can set the exact color of the vehicle (in case of an accident the mechanic knows the paint)
+        self.expenses = expenses # total expenses (just adding up all expenses ever accumulated)
         self.mileage = mileage
-        # other info
+        self.fuel_consumption = 0 # TODO: now just needs to be added to the "fill up" method in vehicleG
+        self.note = note # people can write a note with additional information about the car
+        # feel free to add other info
 
     def dict_data(self):
         return {
             'id': self.id,
-            'make': self.make,
-            'model': self.model,
-            'year': self.year,
+            'name': self.name,
             'color': self.color,
-            'price': self.price,
-            'type': self.type,
-            'mileage': self.mileage
+            'expenses': self.expenses,
+            'mileage': self.mileage,
+            'fuel_consumption': self.fuel_consumption,
+            'note': self.note
         }
 
 
@@ -51,7 +48,15 @@ class Vehicle(db.Model):
 
     @staticmethod
     def get_vehicles():
-        return Vehicle.query.all()
+        return Vehicle.query.all() # why doesnt this return the fuel consumption
+
+
+    # make a refuel method that will call this funtion
+    def _fuel_consumption(self, fuel:float, mileage:float, current_mileage:float):
+        self.fuel_consumption = (current_mileage - mileage) / fuel # calculate the fuel consumption
+        self.mileage = current_mileage # set the new mileage of the car
+
+
 
 
 
