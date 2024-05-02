@@ -3,26 +3,25 @@
 
 
 
-###############################################################
+
+##################################################################################
+020524:
+
+
+----------------------------------------------------------------------------
+FIXED!: right now on get_vehicle data it does not get the fuel consumption
+so that we can see the fuel consumption
+
+----------------------------------------------------------------------------
 toilet brake:
 rn the get is broken fix it.....!
 IT took me half an hour of getting the same error coz I discarded the changes every time is dropped the table
 TODO: SAVE THE CHANGES AFTER DROPPING THE TABLE TO ENSURE CLEAN TESTING!!!
-##################################################################
-020524:
-
-##############################################
-
-FIX!: right now on get_vehicle data it does not get the fuel consumption
-
-so that we can see the fuel consumption
 
 
 
 
-
-
-#################################################
+----------------------------------------------------------------------------
 Clean up the required data so that we dont collect pointless stuff
 
 officially claimed:
@@ -42,12 +41,7 @@ self.fuel_consumption = 0 # TODO: can you make it calculate it based on fill up 
 self.note = note # people can write a note with additional information about the car
 
 data has been cleaned up: 17:38
-##################################################################
-
-
-
-
-
+##################################################################################
 300424:
 there might be a massive problem with the fact that we might need
 
@@ -60,7 +54,7 @@ there might be a massive problem with the fact that we might need
 
 #get started on the basic react model for the front end. Good luck.
 
-#################################
+##################################################################################
 290424:
 Lost the old todoFile for some reason
 
@@ -82,7 +76,7 @@ s1 is connected to s2 with a middle (temp file folder)
 s2 is the only one who gets to work with data
 s1 only does the front end
 
-
+##################################################################################
 Test Data:
 Create:
 {
