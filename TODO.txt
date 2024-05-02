@@ -1,4 +1,17 @@
 
+020524:
+Clean up the required data so that we dont collect pointless stuff
+
+needed:
+milage
+fuel consumption
+mechanic
+owner
+important dates = [] or {}
+
+
+
+
 300424:
 there might be a massive problem with the fact that we might need
 
@@ -19,7 +32,7 @@ made a new one
 
 dont really know what needs to be done.
 
-TODO:redo the id system
+TODO:redo the id system [MAKE SURE ITS INT]
 
 flask is connected to the database
 

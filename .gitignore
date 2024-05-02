@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+#Java
+*iml
+
 # C extensions
 *.so
 
