@@ -45,9 +45,9 @@ class VehicleList(Resource):
 
         vehicles = Vehicle.get_vehicles()
         vehicles_json = [v.dict_data() for v in vehicles]
-        #
-        # with open("src/temp_files/temp.json", "w") as f:
-        #     f.write(json.dumps(vehicles_json,indent=4))
+
+        with open("src/temp_files/temp.json", "w") as f:
+            f.write(json.dumps(vehicles_json,indent=4))
 
         return vehicles_json
 
