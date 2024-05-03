@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Vehicle</title>
+    <style>
+        /* CSS styles */
+        /* Add your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Create Vehicle</h1>
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" placeholder="Enter name">
+    </div>
+    <div class="form-group">
+        <label for="color">Color:</label>
+        <input type="text" id="color" placeholder="Enter color">
+    </div>
+    <div class="form-group">
+        <label for="expenses">Expenses:</label>
+        <input type="number" id="expenses" placeholder="Enter expenses">
+    </div>
+    <div class="form-group">
+        <label for="mileage">Mileage:</label>
+        <input type="number" id="mileage" placeholder="Enter mileage">
+    </div>
+    <div class="form-group">
+        <label for="fuel_consumption">Fuel Consumption:</label>
+        <input type="number" id="fuel_consumption" step="0.1" placeholder="Enter fuel consumption">
+    </div>
+    <div class="form-group">
+        <label for="note">Note:</label>
+        <input type="text" id="note" placeholder="Enter note">
+    </div>
+    <button onclick="createVehicle()">Create Vehicle</button>
+
+    <script>
+        function createVehicle() {
+            // Get input values
+            const name = document.getElementById('name').value;
+            const color = document.getElementById('color').value;
+            const expenses = parseFloat(document.getElementById('expenses').value);
+            const mileage = parseFloat(document.getElementById('mileage').value);
+            const fuel_consumption = parseFloat(document.getElementById('fuel_consumption').value);
+            const note = document.getElementById('note').value;
+
+            // Create object with input values
+            const vehicle = {
+                "name": name,
+                "color": color,
+                "expenses": expenses,
+                "mileage": mileage,
+                "fuel_consumption": fuel_consumption,
+                "note": note
+            };
+
+            // Convert object to JSON string
+            const vehicleJSON = JSON.stringify(vehicle);
+
+            // Send the JSON data to your backend for processing and saving to a JSON file
+            fetch('http://localhost:8080/save-vehicle', { // Adjust the URL to match your backend endpoint
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: vehicleJSON
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Vehicle created successfully!');
+                    // Redirect to the page displaying all vehicles
+                    window.location.href = 'vehicles.html';
+                } else {
+                    throw new Error('Failed to create vehicle');
+                }
+            })
+            .catch(error => {
+                console.error('Error creating vehicle:', error);
+                alert('Failed to create vehicle. Please try again.');
+            });
+        }
+    </script>
+</body>
+</html>

@@ -29,16 +29,32 @@
         .motorcycle-details {
             color: #666;
         }
+
+        #create-vehicle-btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px; /* Add margin bottom to create space between button and vehicle details */
+        }
+
+        #create-vehicle-btn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
+    <!-- Button to navigate to create_vehicle.html page -->
+    <button id="create-vehicle-btn" onclick="location.href='create_vehicle.html';">Create Vehicle</button>
+
     <div id="motorcycle-container"></div>
-
-
 
     <script>
         // Fetch JSON data from backend
-        fetch('../temp_files/temp.json') // Navigate out of the current folder and then into 'temp_files'
+        fetch('../../temp_files/temp.json') // Navigate out of the current folder and then into 'temp_files'
             .then(response => response.json())
             .then(data => {
                 // Iterate through each vehicle in the data array

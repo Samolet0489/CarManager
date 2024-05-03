@@ -8,6 +8,8 @@ __pycache__/
 
 #mine:
 FullTesting
+temp_files
+node_modules
 
 # C extensions
 *.so
