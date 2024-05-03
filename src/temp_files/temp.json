@@ -1,11 +1,20 @@
 [
     {
-        "id": 5093341086,
+        "id": 731640711,
         "name": "Honda FMX650 2005",
         "color": "black",
         "expenses": 5000.0,
         "mileage": 43000.0,
-        "fuel_consumption": 5.4,
+        "fuel_consumption": 0.0,
         "note": "This is my motorcycle :D"
+    },
+    {
+        "id": 2356909157,
+        "name": "Honda civic 2009",
+        "color": "red",
+        "expenses": 7000.0,
+        "mileage": 98000.0,
+        "fuel_consumption": 0.0,
+        "note": "This is my car :D"
     }
 ]

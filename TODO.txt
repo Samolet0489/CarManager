@@ -77,6 +77,34 @@ s2 is the only one who gets to work with data
 s1 only does the front end
 
 ##################################################################################
+date unknown:
+
+what if I just run the different methods as diffrent routes in the javascript
+
+so this hell of a backend can just go away
+
+
+################
+TO_READ: |links to useful info|
+https://flask.palletsprojects.com/en/3.0.x/patterns/sqlite3/
+https://realpython.com/flask-javascript-frontend-for-rest-api/
+################
+
+TODO DOCUMENT EVERYTHING!!!!!!!!!!!!!!!!!! Write comments
+
+290424:###########################################################
+TODO: BEFORE A COMMIT MAKE SURE THAT YOU HAVE SELECTED THE CORRECT FILES
+the  .idea files should not go on github
+
+Making the app and the essentials
+wrote comments on everything that might be needed
+
+careful on the push
+
+TODO: learn how to adopt the front end using JS and HTML (unfortunately its not possible directly)
+research it on google
+
+
 Test Data:
 Create:
 {
@@ -86,4 +114,12 @@ Create:
   "mileage": 43000,
   "fuel_consumption": 5.4,
   "note": "This is my motorcycle :D"
+}
+{
+  "name": "Honda civic 2009",
+  "color": "red",
+  "expenses": 7000,
+  "mileage": 98000,
+  "fuel_consumption": 7.4,
+  "note": "This is my car :D"
 }

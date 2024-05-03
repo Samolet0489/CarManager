@@ -6,6 +6,9 @@ __pycache__/
 #Java
 *iml
 
+#mine:
+FullTesting
+
 # C extensions
 *.so
 
