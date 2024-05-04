@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Details</title>
+    <style>
+        /* Add your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        .vehicle-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .vehicle-name {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .vehicle-details {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div id="vehicle-container"></div>
+
+    <script>
+        // Fetch JSON data from backend
+        fetch('../static/get_vehicles.json')
+            .then(response => response.json())
+            .then(data => {
+                // Iterate through each vehicle in the data array
+                data.forEach(vehicle => {
+                    // Create HTML elements to display vehicle details
+                    const vehicleContainer = document.getElementById('vehicle-container');
+                    const vehicleCard = document.createElement('div');
+                    vehicleCard.classList.add('vehicle-card');
+
+                    const vehicleName = document.createElement('h2');
+                    vehicleName.classList.add('vehicle-name');
+                    vehicleName.textContent = vehicle.name;
+
+                    const vehicleDetails = document.createElement('div');
+                    vehicleDetails.classList.add('vehicle-details');
+                    vehicleDetails.innerHTML = `
+                        <p><strong>Name:</strong> ${vehicle.name}</p>
+                        <p><strong>Color:</strong> ${vehicle.color}</p>
+                        <p><strong>Expenses:</strong> ${vehicle.expenses}</p>
+                        <p><strong>Mileage:</strong> ${vehicle.mileage}</p>
+                        <p><strong>Fuel Consumption:</strong> ${vehicle.fuel_consumption}</p>
+                        <p><strong>Note:</strong> ${vehicle.note}</p>
+                    `;
+
+                    // Append elements to the container
+                    vehicleCard.appendChild(vehicleName);
+                    vehicleCard.appendChild(vehicleDetails);
+                    vehicleContainer.appendChild(vehicleCard);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
+</body>
+</html>

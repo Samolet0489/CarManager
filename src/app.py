@@ -1,16 +1,13 @@
-from flask import Flask
+from flask import Flask, render_template, send_from_directory
 from flask_restx import Api
 
 from src.database import db
-from .api.vehicleG import vehicle_api # a problem with this import
-
-#import the NS models here (NS might stand fir newspaper so rename?)
-
+from .api.vehicleG import vehicle_api
 
 def create_app():
     app = Flask(__name__)
 
-    # configure the database
+    # Configure the database
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///vehicles.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -18,13 +15,19 @@ def create_app():
     with app.app_context():
         db.create_all()
 
-    api = Api(app) #  title= you can add a name
+    api = Api(app)  # Initialize the Flask-RESTx API
 
-    # you have to add the namespace so flask will see the module
+    # Add the vehicle_api namespace to the API
     api.add_namespace(vehicle_api)
 
+    # Define a route to render the vehicles.html template
+    @app.route('/vehicles')
+    def index():
+        return render_template("vehicles.html")
+
+    # Route to serve the JSON file
+    @app.route('/static/<path:filename>')
+    def get_json(filename):
+        return send_from_directory('temp_files', filename)
 
     return app
-
-if __name__ == '__main__':
-    create_app().run(debug=False, port=5000) # see if you want to change the port
