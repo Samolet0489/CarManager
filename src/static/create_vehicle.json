@@ -1,19 +1,8 @@
-[
-  {
-    "name": "222",
-    "color": "222",
-    "expenses": 22,
-    "mileage": 22,
-    "fuel_consumption": 22,
-    "note": "22"
-  },
-
-  {
-    "name": "22",
-    "color": "22",
-    "expenses": 22,
-    "mileage": 22,
-    "fuel_consumption": 22,
-    "note": "22"
-  }
-]
+{
+    "name": "BMW",
+    "color": "white",
+    "expenses": 34000,
+    "mileage": 60000,
+    "fuel_consumption": 5.4,
+    "note": "This is a nice car"
+}

@@ -1,6 +1,6 @@
-from flask import Flask, render_template, send_from_directory
+from flask import Flask, render_template, request, jsonify
 from flask_restx import Api
-
+import json
 from src.database import db
 from .api.vehicleG import vehicle_api
 
@@ -23,11 +23,24 @@ def create_app():
     # Define a route to render the vehicles.html template
     @app.route('/vehicles')
     def index():
-        return render_template("vehicles.html")
+        return render_template("vehicles.html") # works (idk why underlined)
 
-    # Route to serve the JSON file
-    @app.route('/static/<path:filename>')
-    def get_json(filename):
-        return send_from_directory('temp_files', filename)
+    @app.route('/add')
+    def index2():
+        return render_template("create_vehicle.html")
+
+    @app.route('/save-vehicle', methods=['POST'])
+    def save_vehicle():
+        vehicle_data = request.json
+        try:
+
+            file_path = 'src/static/create_vehicle.json' # for some reason the scope is so far out
+
+            with open(file_path, 'w') as file:
+                json.dump(vehicle_data, file, indent=4)
+            return jsonify({'message': 'Vehicle data saved successfully'}), 200
+        except Exception as e:
+            print("Error:", str(e))  # Print the error message to the console
+            return jsonify({'error': 'Failed to save vehicle data'}), 500
 
     return app
