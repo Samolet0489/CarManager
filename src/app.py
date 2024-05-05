@@ -3,6 +3,7 @@ from flask_restx import Api
 import json
 from src.database import db
 from .api.vehicleG import vehicle_api
+from .model.vehicle import Vehicle
 
 def create_app():
     app = Flask(__name__)
@@ -23,6 +24,7 @@ def create_app():
     # Define a route to render the vehicles.html template
     @app.route('/vehicles')
     def index():
+        Vehicle.get_vehicles()
         return render_template("vehicles.html") # works (idk why underlined)
 
     @app.route('/add')
@@ -36,6 +38,8 @@ def create_app():
             file_path = 'src/static/create_vehicle.json' # for some reason the scope is so far out
             with open(file_path, 'w') as file:
                 json.dump(vehicle_data, file, indent=4)
+            Vehicle.add_vehicle_to_db(vehicle_data)
+            # Vehicle.give_me_id() # this is broken AF TODO: fix me!!!
             return jsonify({'message': 'Vehicle data saved successfully'}), 200
         except Exception as e:
             print("Error:", str(e))  # Print the error message to the console

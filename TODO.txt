@@ -5,6 +5,18 @@
 current front end url default:
 http://127.0.0.1:5000/vehicles
 
+progress:
+made quite a few things, now the frontend works properly. ready to add other functions
+
+potential problems:
+the database is full of garbage
+the id system is hell
+cant save empty vehicles from the front end (this could be a feature) ****
+
+todo FIX THE ID SYSTEM!!!!! very important (does it have to be random?)
+
+# might have to make a smaller db for each vehicle added that will follow things about it.
+# might be a good idea to limit the user to an N amount of vehicles
 
 ##################################################################################
 020524:
@@ -124,4 +136,20 @@ Create:
   "mileage": 98000,
   "fuel_consumption": 7.4,
   "note": "This is my car :D"
+}
+{
+  "name": "BMW g20 2022",
+  "color": "white",
+  "expenses": 39000,
+  "mileage": 66000,
+  "fuel_consumption": 5.4,
+  "note": "This is a nice car."
+}
+{
+    "name": "BMW",
+    "color": "black",
+    "expenses": 34000,
+    "mileage": 50000,
+    "fuel_consumption": 5.7,
+    "note": "This is a nice car"
 }

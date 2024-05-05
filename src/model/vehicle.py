@@ -1,6 +1,21 @@
 from typing import List, Optional
-
+import json
 from src.database import db
+from flask_restx import Namespace,fields
+
+
+
+
+frontendVehicle = Namespace('vehicle', description='Vehicle related operations')
+# adding a model so that I can send the data to the
+create_vehicle_model = frontendVehicle.model('Vehicle', {
+    "name": fields.String(required=True, description='Give the vehicle a name'),
+    "color": fields.String(required=True, description='The color of the vehicle'),
+    "expenses": fields.Float(required=False, description='The total expenses of the vehicle'),
+    "mileage": fields.Integer(required=True, description='The milage of the vehicle'),
+    "fuel_consumption": fields.Float(required=False, description='The fuel consumption of the vehicle'), # rn not in use
+    "note": fields.String(required=False, description='Additional notes about the vehicle'),
+})
 
 
 class Vehicle(db.Model):
@@ -40,6 +55,20 @@ class Vehicle(db.Model):
             'note': self.note
         }
 
+#TODO: FIX THIS!!!!!!!!!!!!!!!!!!!!!!!!
+    # @staticmethod
+    # def give_me_id():
+    #     try:
+    #         # Establish a connection to the database
+    #         conn = engine.connect()
+    #         result = conn.execute("SELECT id FROM garage")  # Execute the SQL query
+    #         ids = [row["id"] for row in result]  # Extract the IDs from the query result
+    #         conn.close()  # Close the database connection
+    #         return ids
+    #     except Exception as e:
+    #         print("Error:", e)  # Print any errors that occur
+    #         return None
+
 
     def add_vehicle(self):
         db.session.add(self)
@@ -48,7 +77,14 @@ class Vehicle(db.Model):
 
     @staticmethod
     def get_vehicles():
-        return Vehicle.query.all() # why doesnt this return the fuel consumption
+        data = Vehicle.query.all()
+
+        vehicles_json = [v.dict_data() for v in data]
+
+        with open("src/static/get_vehicles.json", "w") as f:
+            f.write(json.dumps(vehicles_json,indent=4))
+
+        return data
 
 
     # make a refuel method that will call this funtion
@@ -56,7 +92,28 @@ class Vehicle(db.Model):
         self.fuel_consumption = (current_mileage - mileage) / fuel # calculate the fuel consumption
         self.mileage = current_mileage # set the new mileage of the car
 
+    def add_vehicle_to_db(self):
+        with open("./src/static/create_vehicle.json", "r") as f:
+            data = f.read()
+            data_dict = json.loads(data)
+            print(data_dict)
+            print(type(data_dict))
 
+        # temp solution for creating a  bad ID:
+        from random import randint
+        id = randint(1,9999999999) #make THE ID SYSTEM!!!!!!
+
+        new_vehicle = Vehicle(id=id,
+                              name=data_dict["name"],
+                              color=data_dict["color"],
+                              expenses=data_dict["expenses"],
+                              mileage=data_dict['mileage'],
+                              note=data_dict["note"])
+
+        # this works for now
+        db.session.add(new_vehicle)
+        db.session.commit()
+        print("Vehicle added successfully")
 
 
 
