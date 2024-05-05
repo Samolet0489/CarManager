@@ -39,6 +39,7 @@
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
+            margin-right: 10px;
         }
 
         button:hover {
@@ -62,6 +63,8 @@
         <label for="note">Note:</label>
         <input type="text" id="note" placeholder="Enter note"><br><br>
         <button type="submit">Create Vehicle</button>
+        <!-- Add a "Back" button to go back to the vehicles page -->
+        <button type="button" onclick="location.href='/vehicles';">Back</button>
     </form>
 
     <script>
@@ -87,7 +90,7 @@
             .then(response => {
                 if (response.ok) {
                     alert('Vehicle created successfully!');
-                    window.location.href = '/'; // Redirect to the vehicles page
+                    window.location.href = '/vehicles'; // Redirect to the vehicles page
                 } else {
                     throw new Error('Failed to create vehicle');
                 }

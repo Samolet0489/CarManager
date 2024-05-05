@@ -29,9 +29,27 @@
         .vehicle-details {
             color: #666;
         }
+
+        #add-vehicle-btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        #add-vehicle-btn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
+    <!-- Add button to redirect to /add URL -->
+    <button id="add-vehicle-btn" onclick="location.href='/add';">Add a Vehicle</button>
+
     <div id="vehicle-container"></div>
 
     <script>

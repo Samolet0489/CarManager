@@ -1,8 +1,10 @@
 
 
+050524:
 
+current front end url default:
+http://127.0.0.1:5000/vehicles
 
-the front end is running at: http://localhost:8080/
 
 ##################################################################################
 020524:

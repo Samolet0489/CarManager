@@ -33,9 +33,7 @@ def create_app():
     def save_vehicle():
         vehicle_data = request.json
         try:
-
             file_path = 'src/static/create_vehicle.json' # for some reason the scope is so far out
-
             with open(file_path, 'w') as file:
                 json.dump(vehicle_data, file, indent=4)
             return jsonify({'message': 'Vehicle data saved successfully'}), 200
