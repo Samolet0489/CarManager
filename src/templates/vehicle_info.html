@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Information</title>
+    <style>
+        /* Add your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        .vehicle-details {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .vehicle-name {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .detail-label {
+            font-weight: bold;
+            color: #666;
+        }
+
+        .detail-value {
+            color: #333;
+        }
+
+        #back-btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        #back-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Back button -->
+    <button id="back-btn" onclick="window.location.href = '/vehicles';">Back</button>
+
+    <div class="vehicle-details">
+        <h2 class="vehicle-name">{{ vehicle.name }}</h2>
+        <p class="detail-label">Color:</p>
+        <p class="detail-value">{{ vehicle.color }}</p>
+        <p class="detail-label">Expenses:</p>
+        <p class="detail-value">{{ vehicle.expenses }}</p>
+        <p class="detail-label">Mileage:</p>
+        <p class="detail-value">{{ vehicle.mileage }}</p>
+        <p class="detail-label">Fuel Consumption:</p>
+        <p class="detail-value">{{ vehicle.fuel_consumption }}</p>
+        <p class="detail-label">Note:</p>
+        <p class="detail-value">{{ vehicle.note }}</p>
+    </div>
+</body>
+</html>

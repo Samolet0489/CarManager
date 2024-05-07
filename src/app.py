@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_restx import Api
 import json
 from src.database import db
@@ -24,8 +24,16 @@ def create_app():
     # Define a route to render the vehicles.html template
     @app.route('/vehicles')
     def index():
-        Vehicle.get_vehicles()
-        return render_template("vehicles.html") # works (idk why underlined)
+        vehicles = Vehicle.get_vehicles()
+        return render_template("vehicles.html", vehicles=vehicles) # Pass vehicles to the template
+
+    @app.route('/<vehicle_name>/info')
+    def vehicle_info(vehicle_name):
+        vehicle = Vehicle.query.filter_by(name=vehicle_name).first()
+        if vehicle:
+            return render_template("vehicle_info.html", vehicle=vehicle)
+        else:
+            return jsonify({'error': 'Vehicle not found'}), 404
 
     @app.route('/add')
     def index2():
@@ -44,5 +52,9 @@ def create_app():
         except Exception as e:
             print("Error:", str(e))  # Print the error message to the console
             return jsonify({'error': 'Failed to save vehicle data'}), 500
+
+    @app.route('/delete-vehicle', methods=['POST'])
+    def delete_vehicle():
+        pass
 
     return app

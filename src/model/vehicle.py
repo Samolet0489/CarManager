@@ -115,6 +115,10 @@ class Vehicle(db.Model):
         db.session.commit()
         print("Vehicle added successfully")
 
+    #todo add the remove button Mght have to do the inner info first
+    def remove_vehicle(self):
+        pass
+
 
 
 
