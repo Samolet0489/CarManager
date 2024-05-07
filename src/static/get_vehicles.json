@@ -36,21 +36,12 @@
         "note": "This is my motorcycle :D"
     },
     {
-        "id": 7595545638,
-        "name": "d",
-        "color": "d",
-        "expenses": 2.0,
-        "mileage": 2.0,
-        "fuel_consumption": 0.0,
-        "note": "2"
-    },
-    {
-        "id": 59646696470495,
-        "name": "3",
-        "color": "3",
+        "id": 50053045924,
+        "name": "banana",
+        "color": "yellow",
         "expenses": 3.0,
-        "mileage": 3.0,
+        "mileage": 9999.0,
         "fuel_consumption": 0.0,
-        "note": "3"
+        "note": ":p"
     }
 ]

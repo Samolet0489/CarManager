@@ -35,26 +35,41 @@
             color: #333;
         }
 
-        #back-btn {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
+        #button-container {
+            display: flex;
+            justify-content: space-between;
             margin-bottom: 20px;
         }
 
-        #back-btn:hover {
+        #back-btn, #delete-btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 15px 25px; /* Increased padding for larger buttons */
+            font-size: 18px; /* Increased font size for larger buttons */
+            cursor: pointer;
+        }
+
+        #back-btn:hover, #delete-btn:hover {
             background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <!-- Back button -->
-    <button id="back-btn" onclick="window.location.href = '/vehicles';">Back</button>
+    <!-- Button container -->
+    <div id="button-container">
+        <!-- Back button -->
+        <button id="back-btn" onclick="window.location.href = '/vehicles';">Back</button>
 
+        <!-- Delete button -->
+        <form id="delete-form" action="/delete_vehicle" method="POST">
+            <input type="hidden" name="id" value="{{ vehicle.id }}">
+            <button id="delete-btn" type="submit">Delete</button>
+        </form>
+    </div>
+
+    <!-- Vehicle details -->
     <div class="vehicle-details">
         <h2 class="vehicle-name">{{ vehicle.name }}</h2>
         <p class="detail-label">Color:</p>

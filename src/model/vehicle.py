@@ -3,6 +3,7 @@ import json
 from src.database import db
 from flask_restx import Namespace,fields
 from random import randint
+from flask import jsonify
 
 
 
@@ -61,10 +62,10 @@ class Vehicle(db.Model):
             ids = [vehicle.id for vehicle in Vehicle.query.all()] # we retrieve the IDs
             # print(ids)
             # print(type(ids[0]))
-            id = randint(0,99999999999)
-            while id in ids:
-                id = randint(0, 99999999999)
-            return ids
+            new_id  = randint(0,99999999999)
+            while new_id  in ids:
+                new_id  = randint(0, 99999999999)
+            return new_id
         except Exception as e:
             print("Error:", e)
             return 0
@@ -115,7 +116,18 @@ class Vehicle(db.Model):
         print("Vehicle added successfully")
 
     #todo add the remove button Mght have to do the inner info first
-    def remove_vehicle(self):
+    def remove_vehicle(self, id):
+
+        # curerntly pointless as this is done somewhere else (might need it for the flask but rewrite it)
+
+        # vehicle = Vehicle.query.get("id")
+        # vehicle = Vehicle.query.filter_by(id=id).first()
+        # if vehicle:
+        #     db.session.delete(vehicle)
+        #     db.session.commit()
+        #     return jsonify({'message': 'Vehicle deleted successfully'}), 200
+        # else:
+        #     return jsonify({'error': 'Vehicle not found'}), 404
         pass
 
 

@@ -52,8 +52,20 @@ def create_app():
             print("Error:", str(e))  # Print the error message to the console
             return jsonify({'error': 'Failed to save vehicle data'}), 500
 
-    @app.route('/delete-vehicle', methods=['POST'])
-    def delete_vehicle():
-        pass
+    @app.route('/delete_vehicle', methods=['POST'])  #now this works
+    def delete_vehicle(): # a way to remove the vehicles
+        try:
+            vehicle_id = request.form.get("id")
+            vehicle = Vehicle.query.get(vehicle_id)
+            if vehicle:
+                db.session.delete(vehicle) # remove it from the database
+                db.session.commit()
+                # return jsonify({'message': 'Vehicle deleted successfully'}), 200
+                return
+            else:
+                return jsonify({'error': 'Vehicle not found'}), 404
+        except Exception as e:
+            print("Error:", str(e))
+            return jsonify({'error': 'Failed to delete vehicle'}), 500
 
     return app

@@ -1,8 +1,8 @@
 {
-    "name": "dd",
-    "color": "dd",
-    "expenses": 33,
-    "mileage": 33,
-    "fuel_consumption": 33,
-    "note": "33"
+    "name": "banana",
+    "color": "yellow",
+    "expenses": 3,
+    "mileage": 9999,
+    "fuel_consumption": 2,
+    "note": ":p"
 }

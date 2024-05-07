@@ -1,4 +1,16 @@
 
+070524:
+fixed a lot of the old stuff
+implemented a proper Id system (overcomlicated ids for my needs might have to revisit)
+prepared for the fuel stuff
+and the dates stuff
+added a remove option in the fn todo add it in flask too
+
+I may be missing something but I will commit it like this and revisit
+
+todo:EDIT!!!!
+todo: I forgot that I need to add an edit button and then make it so that I can edit stuff
+
 
 050524:
 
@@ -13,7 +25,7 @@ the database is full of garbage
 the id system is hell
 cant save empty vehicles from the front end (this could be a feature) ****
 
-todo FIX THE ID SYSTEM!!!!! very important (does it have to be random?)
+todo {DONE} FIX THE ID SYSTEM!!!!! very important (does it have to be random?)
 
 # might have to make a smaller db for each vehicle added that will follow things about it.
 # might be a good idea to limit the user to an N amount of vehicles
@@ -76,7 +88,7 @@ made a new one
 
 dont really know what needs to be done.
 
-TODO:redo the id system [MAKE SURE ITS INT]
+TODO: {Done} redo the id system [MAKE SURE ITS INT]
 
 flask is connected to the database
 
