@@ -47,7 +47,6 @@ def create_app():
             with open(file_path, 'w') as file:
                 json.dump(vehicle_data, file, indent=4)
             Vehicle.add_vehicle_to_db(vehicle_data)
-            # Vehicle.give_me_id() # this is broken AF TODO: fix me!!!
             return jsonify({'message': 'Vehicle data saved successfully'}), 200
         except Exception as e:
             print("Error:", str(e))  # Print the error message to the console

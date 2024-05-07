@@ -2,7 +2,7 @@ from typing import List, Optional
 import json
 from src.database import db
 from flask_restx import Namespace,fields
-
+from random import randint
 
 
 
@@ -55,20 +55,19 @@ class Vehicle(db.Model):
             'note': self.note
         }
 
-#TODO: FIX THIS!!!!!!!!!!!!!!!!!!!!!!!!
-    # @staticmethod
-    # def give_me_id():
-    #     try:
-    #         # Establish a connection to the database
-    #         conn = engine.connect()
-    #         result = conn.execute("SELECT id FROM garage")  # Execute the SQL query
-    #         ids = [row["id"] for row in result]  # Extract the IDs from the query result
-    #         conn.close()  # Close the database connection
-    #         return ids
-    #     except Exception as e:
-    #         print("Error:", e)  # Print any errors that occur
-    #         return None
-
+    @staticmethod
+    def give_me_id():
+        try:
+            ids = [vehicle.id for vehicle in Vehicle.query.all()] # we retrieve the IDs
+            # print(ids)
+            # print(type(ids[0]))
+            id = randint(0,99999999999)
+            while id in ids:
+                id = randint(0, 99999999999)
+            return ids
+        except Exception as e:
+            print("Error:", e)
+            return 0
 
     def add_vehicle(self):
         db.session.add(self)
@@ -101,7 +100,7 @@ class Vehicle(db.Model):
 
         # temp solution for creating a  bad ID:
         from random import randint
-        id = randint(1,9999999999) #make THE ID SYSTEM!!!!!!
+        id = Vehicle.give_me_id() #make THE ID SYSTEM!!!!!!
 
         new_vehicle = Vehicle(id=id,
                               name=data_dict["name"],
