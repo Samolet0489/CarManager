@@ -1,6 +1,7 @@
 import json
 from random import randint
 
+from flask import request
 from flask_restx import Namespace, Resource, fields
 
 from src.model.vehicle import Vehicle
@@ -65,7 +66,21 @@ class VehicleList(Resource):
 
         return vehicles_json
 
-
+    @vehicle_api.doc(description='Delete a vehicle from the database')
+    @vehicle_api.response(204, 'Vehicle deleted successfully')
+    @vehicle_api.response(404, 'Vehicle not found')
+    @vehicle_api.param('id', 'ID of the vehicle to delete', type=int)
+    def delete(self):
+        try:
+            vehicle_id = int(request.args.get('id'))
+            vehicle = Vehicle.query.get(vehicle_id)
+            if vehicle:
+                Vehicle.delete_vehicle(vehicle)
+                return '', 204
+            else:
+                return {'error': 'Vehicle not found'}, 404
+        except Exception as e:
+            return {'error': 'Failed to delete vehicle', 'details': str(e)}, 500
 
 
 

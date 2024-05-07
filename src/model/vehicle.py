@@ -116,19 +116,9 @@ class Vehicle(db.Model):
         print("Vehicle added successfully")
 
     #todo add the remove button Mght have to do the inner info first
-    def remove_vehicle(self, id):
-
-        # curerntly pointless as this is done somewhere else (might need it for the flask but rewrite it)
-
-        # vehicle = Vehicle.query.get("id")
-        # vehicle = Vehicle.query.filter_by(id=id).first()
-        # if vehicle:
-        #     db.session.delete(vehicle)
-        #     db.session.commit()
-        #     return jsonify({'message': 'Vehicle deleted successfully'}), 200
-        # else:
-        #     return jsonify({'error': 'Vehicle not found'}), 404
-        pass
+    def delete_vehicle(self):
+        db.session.delete(self)
+        db.session.commit()
 
 
 
