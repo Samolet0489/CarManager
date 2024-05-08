@@ -1,4 +1,15 @@
 
+
+##################################################################################
+080525:
+todo: add
+ a second table for the mechanic (name, address, hourly_rate, preferred_brands?, status_BusyOrNot)
+ Owner? (name, year of birth, address, budget, (add a car, get billed, pointless))
+ Driver (for some reason I also have said I will do that)?
+ (Might have to clean these up coz 2 out the 3 make no sense)
+
+
+
 070524:
 fixed a lot of the old stuff
 implemented a proper Id system (overcomlicated ids for my needs might have to revisit)
@@ -9,9 +20,9 @@ added a remove option in the fn todo add it in flask too
 I may be missing something but I will commit it like this and revisit
 
 todo:EDIT!!!!
-todo: I forgot that I need to add an edit button and then make it so that I can edit stuff
+ I forgot that I need to add an edit button and then make it so that I can edit stuff
 
-
+##################################################################################
 050524:
 
 current front end url default:
@@ -127,7 +138,7 @@ wrote comments on everything that might be needed
 
 careful on the push
 
-TODO: learn how to adopt the front end using JS and HTML (unfortunately its not possible directly)
+TODO: {done} learn how to adopt the front end using JS and HTML (unfortunately its not possible directly)
 research it on google
 
 
