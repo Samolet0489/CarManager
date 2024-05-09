@@ -10,7 +10,8 @@ __pycache__/
 FullTesting
 temp_files
 node_modules
-static/generated/
+#mess with this in the future (we want the dir but not the files)
+static/generated/*.json
 
 # C extensions
 *.so

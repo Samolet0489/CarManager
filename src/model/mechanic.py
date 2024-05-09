@@ -8,10 +8,10 @@ class Mechanic(db.Model):
     # making a table for the mechanic
     __tablename__ = 'mechanic'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True, nullable=False)
-    address = db.Column(db.String(80), unique=True, nullable=False)
-    email = db.Column(db.String(80), unique=True, nullable=False)
-    phone = db.Column(db.String(80), unique=True, nullable=False)
+    name = db.Column(db.String(80),  nullable=False)
+    address = db.Column(db.String(80),  nullable=False)
+    email = db.Column(db.String(80),  nullable=False)
+    phone = db.Column(db.String(80),  nullable=False)
     hourly_rate = db.Column(db.Float, nullable=False)
     note = db.Column(db.Text, nullable=True) # this is changed from the originally submitted as it made no sence to have it
 
