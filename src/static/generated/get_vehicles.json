@@ -1,0 +1,29 @@
+[
+    {
+        "id": 47754974508,
+        "name": "yes",
+        "color": "22",
+        "expenses": 22.0,
+        "mileage": 22.0,
+        "fuel_consumption": 0.0,
+        "note": "22"
+    },
+    {
+        "id": 70304543051,
+        "name": "2",
+        "color": "2",
+        "expenses": 2.0,
+        "mileage": 2.0,
+        "fuel_consumption": 0.0,
+        "note": "2"
+    },
+    {
+        "id": 83484253042,
+        "name": "BMW G20 2022",
+        "color": "white",
+        "expenses": 43000.0,
+        "mileage": 66000.0,
+        "fuel_consumption": 0.0,
+        "note": "This is a nice car"
+    }
+]

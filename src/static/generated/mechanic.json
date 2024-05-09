@@ -1,0 +1,20 @@
+[
+    {
+        "id": 39020458203,
+        "name": "Gesho",
+        "address": "Pernik, bulgaria",
+        "email": "EMAIL",
+        "phone": "555-555-5555",
+        "hourly_rate": 40.0,
+        "note": "Golqm chovek e"
+    },
+    {
+        "id": 39326802339,
+        "name": "another mechanic",
+        "address": "somewhere else",
+        "email": "someone@else.com",
+        "phone": "555-555-3333",
+        "hourly_rate": 70.0,
+        "note": "this is someone else"
+    }
+]

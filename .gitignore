@@ -10,6 +10,7 @@ __pycache__/
 FullTesting
 temp_files
 node_modules
+static/generated/
 
 # C extensions
 *.so

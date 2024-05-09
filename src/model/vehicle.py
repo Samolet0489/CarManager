@@ -21,7 +21,7 @@ create_vehicle_model = frontendVehicle.model('Vehicle', {
 
 class Vehicle(db.Model):
 
-    __tablename__ = 'garage'
+    __tablename__ = 'vehicle'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30), nullable=False)
     color= db.Column(db.String(30), nullable=False)
@@ -81,7 +81,7 @@ class Vehicle(db.Model):
 
         vehicles_json = [v.dict_data() for v in data]
 
-        with open("src/static/get_vehicles.json", "w") as f:
+        with open("src/static/generated/get_vehicles.json", "w") as f:
             f.write(json.dumps(vehicles_json,indent=4))
 
         return data
@@ -93,7 +93,7 @@ class Vehicle(db.Model):
         self.mileage = current_mileage # set the new mileage of the car
 
     def add_vehicle_to_db(self):
-        with open("./src/static/create_vehicle.json", "r") as f:
+        with open("./src/static/generated/create_vehicle.json", "r") as f:
             data = f.read()
             data_dict = json.loads(data)
             print(data_dict)
@@ -115,11 +115,19 @@ class Vehicle(db.Model):
         db.session.commit()
         print("Vehicle added successfully")
 
-    #todo add the remove button Mght have to do the inner info first
+    #todo add the remove button Mght have to do the inner info first {done? : check this}
     def delete_vehicle(self):
         db.session.delete(self)
         db.session.commit()
 
+    # does the car need to know about the mechanic? probably not
+    def add_mechanic(self):
+        # add a way to set the mechanic to the vehicle.
+        pass
 
+
+    ##this might be quite important or completely useless todo think about this
+    # def set_owner(self):
+    #     pass # the car does not need to know about its owner
 
 

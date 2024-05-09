@@ -6,7 +6,6 @@
     <title>Create Vehicle</title>
     <style>
         /* CSS styles */
-        /* Add your CSS styles here */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -79,6 +78,11 @@
                 fuel_consumption: parseFloat(document.getElementById('fuel_consumption').value),
                 note: document.getElementById('note').value
             };
+
+
+            // console.log(formData)
+            // console.log(event)
+
 
             fetch('/save-vehicle', {
                 method: 'POST',

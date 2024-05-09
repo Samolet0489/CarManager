@@ -3,6 +3,7 @@ from flask_restx import Api
 import json
 from src.database import db
 from .api.vehicleG import vehicle_api
+from .api.mechanicG import mechanic_api
 from .model.vehicle import Vehicle
 
 def create_app():
@@ -20,6 +21,7 @@ def create_app():
 
     # Add the vehicle_api namespace to the API
     api.add_namespace(vehicle_api)
+    api.add_namespace(mechanic_api)
 
     # Define a route to render the vehicles.html template
     @app.route('/vehicles')
@@ -30,6 +32,7 @@ def create_app():
     @app.route('/<vehicle_name>/info')
     def vehicle_info(vehicle_name):
         vehicle = Vehicle.query.filter_by(name=vehicle_name).first()
+        db.session.close()  # this might be a headache
         if vehicle:
             return render_template("vehicle_info.html", vehicle=vehicle)
         else:
@@ -43,7 +46,7 @@ def create_app():
     def save_vehicle():
         vehicle_data = request.json
         try:
-            file_path = 'src/static/create_vehicle.json' # for some reason the scope is so far out
+            file_path = 'src/static/generated/create_vehicle.json' # for some reason the scope is so far out
             with open(file_path, 'w') as file:
                 json.dump(vehicle_data, file, indent=4)
             Vehicle.add_vehicle_to_db(vehicle_data)
@@ -59,13 +62,16 @@ def create_app():
             vehicle = Vehicle.query.get(vehicle_id)
             if vehicle:
                 db.session.delete(vehicle) # remove it from the database
-                db.session.commit()
+                # db.session.commit()
                 # return jsonify({'message': 'Vehicle deleted successfully'}), 200
-                return
+                return redirect("/vehicles",302)
             else:
                 return jsonify({'error': 'Vehicle not found'}), 404
         except Exception as e:
             print("Error:", str(e))
             return jsonify({'error': 'Failed to delete vehicle'}), 500
+        finally:
+            db.session.commit()
+
 
     return app

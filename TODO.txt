@@ -1,7 +1,29 @@
 
+090524:
+
+when we have more than 1 table the db gets locked
+
+2 mechanics cant have the same phone - feature
+
+#recommended check for multiple running queries
 
 ##################################################################################
 080525:
+todo
+ Add users since every ser will gave their own database
+ maybe limit the vehicles per user
+ add a subscription or something so that the user can have more vehicles
+ good luck!!!
+
+
+----expand on the mechanic functions----
+# get the data for a specific mechanic
+#
+
+# currently adding the mechanic and I realize I will probably need to todo connect the mechanic to the vehicle
+# this sure isn't going to be painful
+
+
 todo: add
  a second table for the mechanic (name, address, hourly_rate, preferred_brands?, status_BusyOrNot)
  Owner? (name, year of birth, address, budget, (add a car, get billed, pointless))
@@ -12,10 +34,10 @@ todo: add
 
 070524:
 fixed a lot of the old stuff
-implemented a proper Id system (overcomlicated ids for my needs might have to revisit)
+implemented a proper Id system (overcomplicated ids for my needs might have to revisit)
 prepared for the fuel stuff
 and the dates stuff
-added a remove option in the fn todo add it in flask too
+added a remove option in the fn todo add it in flask too {done}
 
 I may be missing something but I will commit it like this and revisit
 
@@ -169,10 +191,10 @@ Create:
   "note": "This is a nice car."
 }
 {
-    "name": "BMW",
-    "color": "black",
-    "expenses": 34000,
-    "mileage": 50000,
-    "fuel_consumption": 5.7,
-    "note": "This is a nice car"
+    "name": "BMW e46 m3",
+    "color": "laguna sake blue",
+    "expenses": 24000,
+    "mileage": 199000,
+    "fuel_consumption": 6.8,
+    "note": "The dream car"
 }

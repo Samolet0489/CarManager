@@ -21,6 +21,7 @@ create_vehicle_model = vehicle_api.model('Vehicle', {
 
 
 get_vehicle_model = vehicle_api.model('Vehicle', {
+    "id": fields.Integer(required=True, description='The vehicle id'),
     "name": fields.String(required=True, description='Give the vehicle a name'),
     "color": fields.String(required=True, description='The color of the vehicle'),
     "expenses": fields.Float(required=False, description='The total expenses of the vehicle'),
@@ -39,7 +40,7 @@ class VehicleList(Resource):
     @vehicle_api.expect(create_vehicle_model, validate=True)
     @vehicle_api.marshal_with(create_vehicle_model, envelope='vehicle')
     def post(self):
-        id = randint(0,9999999999) #todo check for the id not to repeat
+        id = Vehicle.give_me_id() # had forgotten to get the id generation trough here
 
         # eventually this should get this data from the temp files
         new_vehicle = Vehicle(id=id,
@@ -61,10 +62,10 @@ class VehicleList(Resource):
 
         # this should not be needed:
 
-        # with open("src/static/get_vehicles.json", "w") as f:
+        # with open("src/static/generated/get_vehicles.json", "w") as f:
         #     f.write(json.dumps(vehicles_json,indent=4))
 
-        return vehicles_json
+        return vehicles_json, 200
 
     @vehicle_api.doc(description='Delete a vehicle from the database')
     @vehicle_api.response(204, 'Vehicle deleted successfully')
@@ -76,7 +77,7 @@ class VehicleList(Resource):
             vehicle = Vehicle.query.get(vehicle_id)
             if vehicle:
                 Vehicle.delete_vehicle(vehicle)
-                return '', 204
+                return 'Vehicle deleted', 204
             else:
                 return {'error': 'Vehicle not found'}, 404
         except Exception as e:
