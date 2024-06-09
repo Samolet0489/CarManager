@@ -3,6 +3,10 @@ todo:THERE ARE NOT EDIT METHODS FOR ANYTHING!!!!
 
 added the basic: add, delete for user (not tested)
 added the edit to vehicles (still missing for everything else)
+complete implementation of edit for the vehicles.
+
+todo: rethink some of your choices for the feachers (not much lef)
+todo: THERE ARE STILL MAIN functions MISSING!!!!!!!!!!
 
 090524:
 
