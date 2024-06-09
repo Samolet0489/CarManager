@@ -1,3 +1,8 @@
+090724:
+todo:THERE ARE NOT EDIT METHODS FOR ANYTHING!!!!
+
+added the basic: add, delete for user (not tested)
+added the edit to vehicles (still missing for everything else)
 
 090524:
 
@@ -10,9 +15,9 @@ when we have more than 1 table the db gets locked
 ##################################################################################
 080525:
 todo
- Add users since every ser will gave their own database
- maybe limit the vehicles per user
- add a subscription or something so that the user can have more vehicles
+ Add users since every ser will gave their own database {the database can be local?}
+ maybe limit the vehicles per user                      {this will be pointless}
+ add a subscription or something so that the user can have more vehicles {that's extra}
  good luck!!!
 
 
@@ -75,7 +80,7 @@ so that we can see the fuel consumption
 toilet brake:
 rn the get is broken fix it.....!
 IT took me half an hour of getting the same error coz I discarded the changes every time is dropped the table
-TODO: SAVE THE CHANGES AFTER DROPPING THE TABLE TO ENSURE CLEAN TESTING!!!
+TODO: {at the bottom of this file} SAVE THE CHANGES AFTER DROPPING THE TABLE TO ENSURE CLEAN TESTING!!!
 
 
 
@@ -152,7 +157,7 @@ https://realpython.com/flask-javascript-frontend-for-rest-api/
 TODO DOCUMENT EVERYTHING!!!!!!!!!!!!!!!!!! Write comments
 
 290424:###########################################################
-TODO: BEFORE A COMMIT MAKE SURE THAT YOU HAVE SELECTED THE CORRECT FILES
+TODO: BEFORE A COMMIT MAKE SURE THAT YOU HAVE SELECTED THE CORRECT FILES {use: git add *}
 the  .idea files should not go on github
 
 Making the app and the essentials

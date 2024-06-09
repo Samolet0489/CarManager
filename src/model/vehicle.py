@@ -120,6 +120,23 @@ class Vehicle(db.Model):
         db.session.delete(self)
         db.session.commit()
 
+    def edit_vehicle(self, name: Optional[str] = None, color: Optional[str] = None, expenses: Optional[float] = None, mileage: Optional[float] = None, fuel_consumption: Optional[float] = None, note: Optional[str] = None):
+        if name is not None:
+            self.name = name
+        if color is not None:
+            self.color = color
+        if expenses is not None:
+            self.expenses = expenses
+        if mileage is not None:
+            self.mileage = mileage
+        if fuel_consumption is not None:
+            self.fuel_consumption = fuel_consumption
+        if note is not None:
+            self.note = note
+        db.session.commit()
+        print("Vehicle updated successfully")
+
+
     # does the car need to know about the mechanic? probably not
     def add_mechanic(self):
         # add a way to set the mechanic to the vehicle.

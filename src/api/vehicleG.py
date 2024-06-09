@@ -30,6 +30,15 @@ get_vehicle_model = vehicle_api.model('Vehicle', {
     "note": fields.String(required=False, description='Additional notes about the vehicle'),
 })
 
+edit_vehicle_model = vehicle_api.model('EditVehicle', {
+    "name": fields.String(required=False, description='Give the vehicle a name'),
+    "color": fields.String(required=False, description='The color of the vehicle'),
+    "expenses": fields.Float(required=False, description='The total expenses of the vehicle'),
+    "mileage": fields.Integer(required=False, description='The mileage of the vehicle'),
+    "fuel_consumption": fields.Float(required=False, description='The fuel consumption of the vehicle'),
+    "note": fields.String(required=False, description='Additional notes about the vehicle'),
+})
+
 
 
 @vehicle_api.route('/')
@@ -82,6 +91,31 @@ class VehicleList(Resource):
                 return {'error': 'Vehicle not found'}, 404
         except Exception as e:
             return {'error': 'Failed to delete vehicle', 'details': str(e)}, 500
+
+    @vehicle_api.doc(edit_vehicle_model, description='Edit a vehicle in the database')
+    @vehicle_api.expect(edit_vehicle_model, validate=True)
+    @vehicle_api.response(200, 'Vehicle updated successfully')
+    @vehicle_api.response(404, 'Vehicle not found')
+    @vehicle_api.param('id', 'ID of the vehicle to edit', type=int, required=True)
+    def put(self):
+        try:
+            vehicle_id = int(request.args.get('id'))
+            vehicle = Vehicle.query.get(vehicle_id)
+            if vehicle:
+                data = request.json
+                vehicle.edit_vehicle(
+                    name=data.get("name"),
+                    color=data.get("color"),
+                    expenses=data.get("expenses"),
+                    mileage=data.get("mileage"),
+                    fuel_consumption=data.get("fuel_consumption"),
+                    note=data.get("note")
+                )
+                return {'message': 'Vehicle updated successfully'}, 200
+            else:
+                return {'error': 'Vehicle not found'}, 404
+        except Exception as e:
+            return {'error': 'Failed to update vehicle', 'details': str(e)}, 500
 
 
 

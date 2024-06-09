@@ -38,3 +38,18 @@ class User (db.Model):
             print("Error:", e)
             return 0
 
+    def add_user(self): # add users to the DB
+        db.session.add(self)
+        db.session.commit()
+
+    def delete_user(self): # remove users from the DB
+        db.session.delete(self)
+        db.session.commit()
+
+    def edit_user(self, id:int, name:str, password:str):
+        user = User.query.get(id)
+        user.name = name
+        user.password = password
+        db.session.commit()
+
+

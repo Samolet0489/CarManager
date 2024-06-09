@@ -25,7 +25,7 @@ def create_app():
 
     # Define a route to render the vehicles.html template
     @app.route('/vehicles')
-    def index():
+    def index(): # load the default page for seeing our vehicles
         vehicles = Vehicle.get_vehicles()
         return render_template("vehicles.html", vehicles=vehicles) # Pass vehicles to the template
 
@@ -39,7 +39,7 @@ def create_app():
             return jsonify({'error': 'Vehicle not found'}), 404
 
     @app.route('/add')
-    def index2():
+    def index2(): # load the page for adding vehicles
         return render_template("create_vehicle.html")
 
     @app.route('/save-vehicle', methods=['POST'])
@@ -72,6 +72,23 @@ def create_app():
             return jsonify({'error': 'Failed to delete vehicle'}), 500
         finally:
             db.session.commit()
+
+    @app.route('/edit_vehicle/<int:vehicle_id>', methods=['GET', 'POST'])
+    def edit_vehicle(vehicle_id):
+        vehicle = Vehicle.query.get(vehicle_id)
+        if request.method == 'POST':
+            data = request.form
+            vehicle.edit_vehicle(
+                name=data.get("name"),
+                color=data.get("color"),
+                expenses=data.get("expenses"),
+                mileage=data.get("mileage"),
+                fuel_consumption=data.get("fuel_consumption"),
+                note=data.get("note")
+            )
+            return redirect(url_for('vehicle_info', vehicle_name=vehicle.name))
+        return render_template("edit_vehicle.html", vehicle=vehicle)
+
 
 
     return app

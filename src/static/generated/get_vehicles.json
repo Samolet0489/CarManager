@@ -4,18 +4,27 @@
         "name": "ss",
         "color": "ss",
         "expenses": 33.0,
-        "mileage": 33.0,
+        "mileage": 3300.0,
+        "fuel_consumption": 6.0,
+        "note": "This was just an S and the millage was 33"
+    },
+    {
+        "id": 13104289162,
+        "name": "Bmw",
+        "color": "white",
+        "expenses": 220000.0,
+        "mileage": 2222222.0,
         "fuel_consumption": 0.0,
-        "note": "s"
+        "note": "This is a car"
     },
     {
         "id": 47754974508,
-        "name": "yes",
-        "color": "22",
-        "expenses": 22.0,
-        "mileage": 22.0,
-        "fuel_consumption": 0.0,
-        "note": "22"
+        "name": "No",
+        "color": "Green",
+        "expenses": 2.0,
+        "mileage": 3.0,
+        "fuel_consumption": 4.0,
+        "note": "imagine"
     },
     {
         "id": 61769964127,
@@ -28,12 +37,21 @@
     },
     {
         "id": 70304543051,
-        "name": "2",
-        "color": "2",
+        "name": "This used to be 2",
+        "color": "22",
         "expenses": 2.0,
         "mileage": 2.0,
+        "fuel_consumption": 2.0,
+        "note": "2222"
+    },
+    {
+        "id": 82449112476,
+        "name": "Merc",
+        "color": "black",
+        "expenses": 33000.0,
+        "mileage": 333333.0,
         "fuel_consumption": 0.0,
-        "note": "2"
+        "note": "another Car"
     },
     {
         "id": 83484253042,

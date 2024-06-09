@@ -41,7 +41,12 @@
             margin-bottom: 20px;
         }
 
-        #back-btn, #delete-btn {
+        #button-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        #back-btn, #edit-btn, #delete-btn {
             background-color: #007bff;
             color: #fff;
             border: none;
@@ -51,7 +56,7 @@
             cursor: pointer;
         }
 
-        #back-btn:hover, #delete-btn:hover {
+        #back-btn:hover, #edit-btn:hover, #delete-btn:hover {
             background-color: #0056b3;
         }
     </style>
@@ -62,11 +67,17 @@
         <!-- Back button -->
         <button id="back-btn" onclick="window.location.href = '/vehicles';">Back</button>
 
-        <!-- Delete button -->
-        <form id="delete-form" action="/delete_vehicle" method="POST">
-            <input type="hidden" name="id" value="{{ vehicle.id }}">
-            <button id="delete-btn" type="submit">Delete</button>
-        </form>
+        <!-- Button group for edit and delete buttons -->
+        <div id="button-group">
+            <!-- Edit button -->
+            <button id="edit-btn" onclick="window.location.href = '/edit_vehicle/{{ vehicle.id }}';">Edit</button>
+
+            <!-- Delete button -->
+            <form id="delete-form" action="/delete_vehicle" method="POST">
+                <input type="hidden" name="id" value="{{ vehicle.id }}">
+                <button id="delete-btn" type="submit">Delete</button>
+            </form>
+        </div>
     </div>
 
     <!-- Vehicle details -->
