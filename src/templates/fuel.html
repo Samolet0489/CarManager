@@ -69,6 +69,10 @@
 
         .history-container {
             margin-top: 40px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
         }
 
         .history-container h3 {
@@ -91,10 +95,21 @@
         }
 
         .history-table th {
-            background-color: #f4f4f4;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .history-table td {
+            font-size: 14px;
+        }
+
+        .history-table tr:nth-child(even) {
+            background-color: #f9f9f9;
         }
     </style>
     <script>
+<!--        I borrowed some code from the internet-->
         function calculateTotal() {
             var amount = parseFloat(document.getElementById('amount').value) || 0;
             var pricePerLiter = parseFloat(document.getElementById('price-per-liter').value) || 0;
@@ -132,9 +147,11 @@
                     <th>Mileage</th>
                     <th>Price per Liter</th>
                     <th>Total Price</th>
+                    <th>Fuel Mileage (L/100km)</th>
                 </tr>
             </thead>
             <tbody>
+                {% set prev_mileage = None %}
                 {% for refuel in refuel_history %}
                 <tr>
                     <td>{{ refuel.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
@@ -142,7 +159,15 @@
                     <td>{{ refuel.mileage }}</td>
                     <td>{{ '%.2f' | format(refuel.price_per_liter) }}</td>
                     <td>{{ '%.2f' | format(refuel.total_price) }}</td>
+                    <td>
+                        {% if prev_mileage is not none %}
+                            {{ '%.1f' | format((refuel.amount / (refuel.mileage - prev_mileage)) * 100) }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
                 </tr>
+                {% set prev_mileage = refuel.mileage %}
                 {% endfor %}
             </tbody>
         </table>
