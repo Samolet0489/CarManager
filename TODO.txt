@@ -17,7 +17,8 @@ todo:
 If I am not lazy I should have started it today evening :/
 
 090724:
-todo:THERE ARE NOT EDIT METHODS FOR ANYTHING!!!!
+todo:THERE ARE NOT EDIT METHODS FOR ANYTHING!!!! {done for the vehicles,
+                                                    everything else ehh..}
 
 added the basic: add, delete for user (not tested)
 added the edit to vehicles (still missing for everything else)

@@ -4,6 +4,7 @@ import json
 from src.database import db
 from .api.vehicleG import vehicle_api
 from .api.mechanicG import mechanic_api
+from .model.refuel_history import RefuelHistory
 from .model.vehicle import Vehicle
 
 def create_app():
@@ -89,28 +90,44 @@ def create_app():
             return redirect(url_for('vehicle_info', vehicle_name=vehicle.name))
         return render_template("edit_vehicle.html", vehicle=vehicle)
 
-
-    @app.route('/fuel_vehicle/<int:vehicle_id>', methods=['GET'])
+    @app.route('/fuel_vehicle/<int:vehicle_id>', methods=['GET', 'POST'])
     def fuel_vehicle(vehicle_id):
         vehicle = Vehicle.query.get(vehicle_id)
+        if request.method == 'POST':
+            amount = request.form.get('amount')
+            current_mileage = request.form.get('mileage')
+            price_per_liter = request.form.get('price_per_liter')
+            total_price = request.form.get('total_price')
+
+            previous_mileage = vehicle.mileage
+            liters_used = float(amount)
+
+            # Calculate fuel consumption
+            if previous_mileage != float(current_mileage):
+                fuel_consumption = (liters_used / (float(current_mileage) - previous_mileage)) * 100
+            else:
+                fuel_consumption = 0
+
+            # Update vehicle's fuel consumption and mileage
+            vehicle.fuel_consumption = fuel_consumption
+            vehicle.mileage = float(current_mileage)
+
+            new_refuel = RefuelHistory(
+                vehicle_id=vehicle.id,
+                amount=liters_used,
+                mileage=float(current_mileage),
+                price_per_liter=float(price_per_liter),
+                total_price=float(total_price)
+            )
+
+            db.session.add(new_refuel)
+            db.session.commit()
+
+            return redirect(url_for('vehicle_info', vehicle_name=vehicle.name))
+
         if vehicle:
             return render_template("fuel.html", vehicle=vehicle)
         else:
             return jsonify({'error': 'Vehicle not found'}), 404
-
-    @app.route('/save_refuel', methods=['POST'])
-    def save_refuel():
-        vehicle_id = request.form.get('vehicle_id')
-        amount = request.form.get('amount')
-        mileage = request.form.get('mileage')
-        price_per_liter = request.form.get('price_per_liter')
-        total_price = request.form.get('total_price')
-
-        # Process the refuel data and save it to the database
-        # ...
-
-        return redirect(url_for('vehicle_info', vehicle_name=Vehicle.query.get(vehicle_id).name))
-
-
 
     return app

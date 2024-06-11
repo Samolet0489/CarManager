@@ -13,8 +13,8 @@
         "name": "Bmw",
         "color": "white",
         "expenses": 220000.0,
-        "mileage": 2222222.0,
-        "fuel_consumption": 0.0,
+        "mileage": 140500.0,
+        "fuel_consumption": 9.0,
         "note": "This is a car"
     },
     {

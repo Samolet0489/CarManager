@@ -3,6 +3,7 @@ import json
 from src.database import db
 from flask_restx import Namespace,fields
 from random import randint
+from .refuel_history import RefuelHistory
 from flask import jsonify
 
 
@@ -29,6 +30,8 @@ class Vehicle(db.Model):
     mileage = db.Column(db.Float, nullable=False)
     fuel_consumption = db.Column(db.Float, nullable=False)
     note = db.Column(db.String(500), nullable=True)
+
+    refuel_history = db.relationship('RefuelHistory', back_populates='vehicle')
 
     # def repr(self):  # This makes it into a string representation
     #     return f'Vehicle {self.make} {self.model}'
