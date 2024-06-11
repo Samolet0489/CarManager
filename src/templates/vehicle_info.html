@@ -96,7 +96,7 @@
         <p class="detail-label">Mileage:</p>
         <p class="detail-value">{{ vehicle.mileage }}</p>
         <p class="detail-label">Fuel Consumption:</p>
-        <p class="detail-value">{{ vehicle.fuel_consumption }}</p>
+        <p class="detail-value">{{ '%.1f' | format(vehicle.fuel_consumption) }}</p>
         <p class="detail-label">Note:</p>
         <p class="detail-value">{{ vehicle.note }}</p>
         <!-- Fuel button -->

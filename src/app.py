@@ -95,27 +95,32 @@ def create_app():
         vehicle = Vehicle.query.get(vehicle_id)
         if request.method == 'POST':
             amount = request.form.get('amount')
-            current_mileage = request.form.get('mileage')
+            current_mileage = float(request.form.get('mileage'))
             price_per_liter = request.form.get('price_per_liter')
             total_price = request.form.get('total_price')
 
             previous_mileage = vehicle.mileage
             liters_used = float(amount)
 
+            # Check if the new mileage is less than the previous mileage
+            if current_mileage < previous_mileage:
+                error = 'Current mileage cannot be less than the previous mileage.'
+                return render_template("fuel.html", vehicle=vehicle, error=error)
+
             # Calculate fuel consumption
-            if previous_mileage != float(current_mileage):
-                fuel_consumption = (liters_used / (float(current_mileage) - previous_mileage)) * 100
+            if previous_mileage != current_mileage:
+                fuel_consumption = (liters_used / (current_mileage - previous_mileage)) * 100
             else:
                 fuel_consumption = 0
 
             # Update vehicle's fuel consumption and mileage
             vehicle.fuel_consumption = fuel_consumption
-            vehicle.mileage = float(current_mileage)
+            vehicle.mileage = current_mileage
 
             new_refuel = RefuelHistory(
                 vehicle_id=vehicle.id,
                 amount=liters_used,
-                mileage=float(current_mileage),
+                mileage=current_mileage,
                 price_per_liter=float(price_per_liter),
                 total_price=float(total_price)
             )
