@@ -105,11 +105,13 @@ def create_app():
             # Check if the new mileage is less than the previous mileage
             if current_mileage < previous_mileage:
                 error = 'Current mileage cannot be less than the previous mileage.'
-                return render_template("fuel.html", vehicle=vehicle, error=error)
+                refuel_history = RefuelHistory.query.filter_by(vehicle_id=vehicle_id).all()
+                return render_template("fuel.html", vehicle=vehicle, error=error, refuel_history=refuel_history)
 
             # Calculate fuel consumption
             if previous_mileage != current_mileage:
                 fuel_consumption = (liters_used / (current_mileage - previous_mileage)) * 100
+                fuel_consumption = round(fuel_consumption, 1)  # Round to one decimal place
             else:
                 fuel_consumption = 0
 
@@ -131,7 +133,8 @@ def create_app():
             return redirect(url_for('vehicle_info', vehicle_name=vehicle.name))
 
         if vehicle:
-            return render_template("fuel.html", vehicle=vehicle)
+            refuel_history = RefuelHistory.query.filter_by(vehicle_id=vehicle_id).all()
+            return render_template("fuel.html", vehicle=vehicle, refuel_history=refuel_history)
         else:
             return jsonify({'error': 'Vehicle not found'}), 404
 

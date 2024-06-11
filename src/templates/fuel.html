@@ -66,6 +66,33 @@
             margin-bottom: 20px;
             text-align: center;
         }
+
+        .history-container {
+            margin-top: 40px;
+        }
+
+        .history-container h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #333;
+            text-align: center;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .history-table th, .history-table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .history-table th {
+            background-color: #f4f4f4;
+        }
     </style>
     <script>
         function calculateTotal() {
@@ -93,6 +120,32 @@
             <input type="number" id="total-price" name="total_price" step="0.01" readonly>
             <button type="submit">Save Refuel</button>
         </form>
+    </div>
+
+    <div class="history-container">
+        <h3>Refuel History</h3>
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Amount (Liters)</th>
+                    <th>Mileage</th>
+                    <th>Price per Liter</th>
+                    <th>Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for refuel in refuel_history %}
+                <tr>
+                    <td>{{ refuel.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td>{{ '%.1f' | format(refuel.amount) }}</td>
+                    <td>{{ refuel.mileage }}</td>
+                    <td>{{ '%.2f' | format(refuel.price_per_liter) }}</td>
+                    <td>{{ '%.2f' | format(refuel.total_price) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </body>
 </html>
