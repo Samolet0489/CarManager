@@ -146,6 +146,39 @@ class Vehicle(db.Model):
         pass
 
 
+# FUEL operations:
+    def refuel(self, amount: float, current_mileage: float, price_per_liter: float, total_price: float):
+        # Check if the new mileage is less than the previous mileage
+        if current_mileage < self.mileage:
+            raise ValueError('Current mileage cannot be less than the previous mileage.')
+
+        # Calculate fuel consumption
+        liters_used = amount
+        if self.mileage != current_mileage:
+            fuel_consumption = (liters_used / (current_mileage - self.mileage)) * 100
+            fuel_consumption = round(fuel_consumption, 1)
+        else:
+            fuel_consumption = 0
+
+        # Update vehicle's fuel consumption and mileage
+        self.fuel_consumption = fuel_consumption
+        self.mileage = current_mileage
+
+        new_refuel = RefuelHistory(
+            vehicle_id=self.id,
+            amount=liters_used,
+            mileage=current_mileage,
+            price_per_liter=price_per_liter,
+            total_price=total_price
+        )
+
+        db.session.add(new_refuel)
+        db.session.commit()
+
+    def get_refuel_history(self):
+        return RefuelHistory.query.filter_by(vehicle_id=self.id).all()
+
+
     ##this might be quite important or completely useless todo think about this
     # def set_owner(self):
     #     pass # the car does not need to know about its owner

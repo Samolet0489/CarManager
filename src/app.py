@@ -94,44 +94,20 @@ def create_app():
     def fuel_vehicle(vehicle_id):
         vehicle = Vehicle.query.get(vehicle_id)
         if request.method == 'POST':
-            amount = float(request.form.get('amount'))
-            current_mileage = float(request.form.get('mileage'))
-            price_per_liter = float(request.form.get('price_per_liter'))
-            total_price = float(request.form.get('total_price'))
-
-            # Check if the new mileage is less than the previous mileage
-            if current_mileage < vehicle.mileage:
-                error = 'Current mileage cannot be less than the previous mileage.'
-                refuel_history = RefuelHistory.query.filter_by(vehicle_id=vehicle_id).all()
+            try:
+                amount = float(request.form.get('amount'))
+                current_mileage = float(request.form.get('mileage'))
+                price_per_liter = float(request.form.get('price_per_liter'))
+                total_price = float(request.form.get('total_price'))
+                vehicle.refuel(amount, current_mileage, price_per_liter, total_price)
+                return redirect(url_for('fuel_vehicle', vehicle_id=vehicle.id))
+            except ValueError as e:
+                error = str(e)
+                refuel_history = vehicle.get_refuel_history()
                 return render_template("fuel.html", vehicle=vehicle, error=error, refuel_history=refuel_history)
 
-            # Calculate fuel consumption
-            liters_used = amount
-            if vehicle.mileage != current_mileage:
-                fuel_consumption = (liters_used / (current_mileage - vehicle.mileage)) * 100
-                fuel_consumption = round(fuel_consumption, 1)  # Round to one decimal place
-            else:
-                fuel_consumption = 0
-
-            # Update vehicle's fuel consumption and mileage
-            vehicle.fuel_consumption = fuel_consumption
-            vehicle.mileage = current_mileage
-
-            new_refuel = RefuelHistory(
-                vehicle_id=vehicle.id,
-                amount=liters_used,
-                mileage=current_mileage,
-                price_per_liter=price_per_liter,
-                total_price=total_price
-            )
-
-            db.session.add(new_refuel)
-            db.session.commit()
-
-            return redirect(url_for('fuel_vehicle', vehicle_id=vehicle.id))
-
         if vehicle:
-            refuel_history = RefuelHistory.query.filter_by(vehicle_id=vehicle_id).all()
+            refuel_history = vehicle.get_refuel_history()
             return render_template("fuel.html", vehicle=vehicle, refuel_history=refuel_history)
         else:
             return jsonify({'error': 'Vehicle not found'}), 404
