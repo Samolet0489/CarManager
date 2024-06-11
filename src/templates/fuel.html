@@ -12,6 +12,21 @@
             padding: 20px;
         }
 
+        .back-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+
         .fuel-container {
             background-color: #fff;
             border-radius: 8px;
@@ -109,7 +124,6 @@
         }
     </style>
     <script>
-<!--        I borrowed some code from the internet-->
         function calculateTotal() {
             var amount = parseFloat(document.getElementById('amount').value) || 0;
             var pricePerLiter = parseFloat(document.getElementById('price-per-liter').value) || 0;
@@ -119,6 +133,8 @@
     </script>
 </head>
 <body>
+    <button class="back-button" onclick="history.back()">Back</button>
+
     <div class="fuel-container">
         <h2>Refuel Vehicle</h2>
         {% if error %}
@@ -152,7 +168,7 @@
             </thead>
             <tbody>
                 {% set prev_mileage = None %}
-                {% for refuel in refuel_history %}
+                {% for refuel in refuel_history|sort(attribute='timestamp', reverse=True) %}
                 <tr>
                     <td>{{ refuel.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                     <td>{{ '%.1f' | format(refuel.amount) }}</td>

@@ -94,23 +94,21 @@ def create_app():
     def fuel_vehicle(vehicle_id):
         vehicle = Vehicle.query.get(vehicle_id)
         if request.method == 'POST':
-            amount = request.form.get('amount')
+            amount = float(request.form.get('amount'))
             current_mileage = float(request.form.get('mileage'))
-            price_per_liter = request.form.get('price_per_liter')
-            total_price = request.form.get('total_price')
-
-            previous_mileage = vehicle.mileage
-            liters_used = float(amount)
+            price_per_liter = float(request.form.get('price_per_liter'))
+            total_price = float(request.form.get('total_price'))
 
             # Check if the new mileage is less than the previous mileage
-            if current_mileage < previous_mileage:
+            if current_mileage < vehicle.mileage:
                 error = 'Current mileage cannot be less than the previous mileage.'
                 refuel_history = RefuelHistory.query.filter_by(vehicle_id=vehicle_id).all()
                 return render_template("fuel.html", vehicle=vehicle, error=error, refuel_history=refuel_history)
 
             # Calculate fuel consumption
-            if previous_mileage != current_mileage:
-                fuel_consumption = (liters_used / (current_mileage - previous_mileage)) * 100
+            liters_used = amount
+            if vehicle.mileage != current_mileage:
+                fuel_consumption = (liters_used / (current_mileage - vehicle.mileage)) * 100
                 fuel_consumption = round(fuel_consumption, 1)  # Round to one decimal place
             else:
                 fuel_consumption = 0
@@ -123,14 +121,14 @@ def create_app():
                 vehicle_id=vehicle.id,
                 amount=liters_used,
                 mileage=current_mileage,
-                price_per_liter=float(price_per_liter),
-                total_price=float(total_price)
+                price_per_liter=price_per_liter,
+                total_price=total_price
             )
 
             db.session.add(new_refuel)
             db.session.commit()
 
-            return redirect(url_for('vehicle_info', vehicle_name=vehicle.name))
+            return redirect(url_for('fuel_vehicle', vehicle_id=vehicle.id))
 
         if vehicle:
             refuel_history = RefuelHistory.query.filter_by(vehicle_id=vehicle_id).all()
