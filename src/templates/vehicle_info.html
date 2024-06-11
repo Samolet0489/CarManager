@@ -46,7 +46,7 @@
             gap: 10px;
         }
 
-        #back-btn, #edit-btn, #delete-btn {
+        #back-btn, #edit-btn, #delete-btn, #fuel-btn {
             background-color: #007bff;
             color: #fff;
             border: none;
@@ -56,8 +56,14 @@
             cursor: pointer;
         }
 
-        #back-btn:hover, #edit-btn:hover, #delete-btn:hover {
+        #back-btn:hover, #edit-btn:hover, #delete-btn:hover, #fuel-btn:hover {
             background-color: #0056b3;
+        }
+
+        #fuel-btn {
+            display: block;
+            width: 100%;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -93,6 +99,8 @@
         <p class="detail-value">{{ vehicle.fuel_consumption }}</p>
         <p class="detail-label">Note:</p>
         <p class="detail-value">{{ vehicle.note }}</p>
+        <!-- Fuel button -->
+        <button id="fuel-btn" onclick="window.location.href = '/fuel_vehicle/{{ vehicle.id }}';">Refuel</button>
     </div>
 </body>
 </html>

@@ -90,5 +90,27 @@ def create_app():
         return render_template("edit_vehicle.html", vehicle=vehicle)
 
 
+    @app.route('/fuel_vehicle/<int:vehicle_id>', methods=['GET'])
+    def fuel_vehicle(vehicle_id):
+        vehicle = Vehicle.query.get(vehicle_id)
+        if vehicle:
+            return render_template("fuel.html", vehicle=vehicle)
+        else:
+            return jsonify({'error': 'Vehicle not found'}), 404
+
+    @app.route('/save_refuel', methods=['POST'])
+    def save_refuel():
+        vehicle_id = request.form.get('vehicle_id')
+        amount = request.form.get('amount')
+        mileage = request.form.get('mileage')
+        price_per_liter = request.form.get('price_per_liter')
+        total_price = request.form.get('total_price')
+
+        # Process the refuel data and save it to the database
+        # ...
+
+        return redirect(url_for('vehicle_info', vehicle_name=Vehicle.query.get(vehicle_id).name))
+
+
 
     return app

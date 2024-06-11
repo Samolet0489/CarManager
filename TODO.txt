@@ -1,3 +1,21 @@
+110724:
+started implementation of the fuel stuff:
+
+DO I change the database so that it saves the last few refuels or something like that
+For now am not planning on doing the profile thing
+
+Done:
+added new html for refueling
+added fuel millage to the front page
+added a refueling button to the vehicle_info page
+
+todo:
+    How do i want to save the data in the database (do I want a history or do I want just a fuel millage)
+    Just the fuel millage will be easier but a bit pointless (it will be cooler with a history)
+    IF!!! history is to be implemented the database will have to contain a new column that will have tuples with past refuels?
+
+If I am not lazy I should have started it today evening :/
+
 090724:
 todo:THERE ARE NOT EDIT METHODS FOR ANYTHING!!!!
 

@@ -81,7 +81,8 @@
                     vehicleDetails.classList.add('vehicle-details');
                     vehicleDetails.innerHTML = `
                         <p><strong>Name:</strong> ${vehicle.name}</p>
-                        <p><strong>Mileage:</strong> ${vehicle.mileage}</p>
+                        <p><strong>Fuel Consumption:</strong> ${vehicle.fuel_consumption.toFixed(1)}</p>
+                        <p><strong>Mileage:</strong> ${vehicle.mileage.toFixed(1)}</p>
                     `;
 
                     // Append elements to the container
