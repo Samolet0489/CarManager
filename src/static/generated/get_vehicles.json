@@ -4,8 +4,8 @@
         "name": "ss",
         "color": "ss",
         "expenses": 33.0,
-        "mileage": 3300.0,
-        "fuel_consumption": 6.0,
+        "mileage": 33500.0,
+        "fuel_consumption": 0.1,
         "note": "This was just an S and the millage was 33"
     },
     {
@@ -13,8 +13,8 @@
         "name": "Bmw",
         "color": "white",
         "expenses": 220000.0,
-        "mileage": 36000.0,
-        "fuel_consumption": 5.8,
+        "mileage": 36500.0,
+        "fuel_consumption": 6.0,
         "note": "This is a car"
     },
     {
