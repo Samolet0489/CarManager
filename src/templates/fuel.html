@@ -124,6 +124,7 @@
         }
     </style>
     <script>
+        // calculate the total price based on the amount and price per liter
         function calculateTotal() {
             var amount = parseFloat(document.getElementById('amount').value) || 0;
             var pricePerLiter = parseFloat(document.getElementById('price-per-liter').value) || 0;
@@ -167,23 +168,15 @@
                 </tr>
             </thead>
             <tbody>
-                {% set prev_mileage = None %}
-                {% for refuel in refuel_history|sort(attribute='timestamp', reverse=True) %}
+                {% for refuel, fuel_mileage in refuel_history %}
                 <tr>
                     <td>{{ refuel.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                     <td>{{ '%.1f' | format(refuel.amount) }}</td>
                     <td>{{ refuel.mileage }}</td>
                     <td>{{ '%.2f' | format(refuel.price_per_liter) }}</td>
                     <td>{{ '%.2f' | format(refuel.total_price) }}</td>
-                    <td>
-                        {% if prev_mileage is not none %}
-                            {{ '%.1f' | format((refuel.amount / (refuel.mileage - prev_mileage)) * 100) }}
-                        {% else %}
-                            N/A
-                        {% endif %}
-                    </td>
+                    <td>{{ '%.1f' | format(fuel_mileage) if fuel_mileage is not none else 'N/A' }}</td>
                 </tr>
-                {% set prev_mileage = refuel.mileage %}
                 {% endfor %}
             </tbody>
         </table>

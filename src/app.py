@@ -95,19 +95,22 @@ def create_app():
         vehicle = Vehicle.query.get(vehicle_id)
         if request.method == 'POST':
             try:
+                # get the data (make sure its appropriate types)
                 amount = float(request.form.get('amount'))
                 current_mileage = float(request.form.get('mileage'))
                 price_per_liter = float(request.form.get('price_per_liter'))
                 total_price = float(request.form.get('total_price'))
+                # save the data
                 vehicle.refuel(amount, current_mileage, price_per_liter, total_price)
                 return redirect(url_for('fuel_vehicle', vehicle_id=vehicle.id))
-            except ValueError as e:
+            except ValueError as e: # handle errors
                 error = str(e)
-                refuel_history = vehicle.get_refuel_history()
+                refuel_history = RefuelHistory.get_fuel_mileage(vehicle_id)
                 return render_template("fuel.html", vehicle=vehicle, error=error, refuel_history=refuel_history)
 
         if vehicle:
-            refuel_history = vehicle.get_refuel_history()
+            # give the data so it can be rendered
+            refuel_history = RefuelHistory.get_fuel_mileage(vehicle_id)
             return render_template("fuel.html", vehicle=vehicle, refuel_history=refuel_history)
         else:
             return jsonify({'error': 'Vehicle not found'}), 404
