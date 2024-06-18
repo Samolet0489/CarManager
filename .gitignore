@@ -12,6 +12,7 @@ temp_files
 node_modules
 #mess with this in the future (we want the dir but not the files)
 static/generated/*.json
+static/generated/
 
 # C extensions
 *.so
