@@ -42,3 +42,24 @@ class RefuelHistory(db.Model):
             mileage_data.append((refuels[-1], None))
 
         return mileage_data
+
+    @classmethod
+    def update_refuel(cls, refuel_id, data):
+        refuel = cls.query.get(refuel_id)
+        if refuel:
+            refuel.amount = float(data.get('amount'))
+            refuel.mileage = float(data.get('mileage'))
+            refuel.price_per_liter = float(data.get('price_per_liter'))
+            refuel.total_price = float(data.get('total_price'))
+            db.session.commit()
+        return refuel
+
+    @classmethod
+    def delete_refuel(cls, refuel_id):
+        refuel = cls.query.get(refuel_id)
+        if refuel:
+            vehicle_id = refuel.vehicle_id
+            db.session.delete(refuel)
+            db.session.commit()
+            return vehicle_id
+        return None
