@@ -24,7 +24,6 @@ def create_app():
     api.add_namespace(vehicle_api)
     api.add_namespace(mechanic_api)
 
-    # Define a route to render the vehicles.html template
     @app.route('/vehicles')
     def index(): # load the default page for seeing our vehicles
         vehicles = Vehicle.get_vehicles()
@@ -95,12 +94,10 @@ def create_app():
         vehicle = Vehicle.query.get(vehicle_id)
         if request.method == 'POST':
             try:
-                # get the data (make sure its appropriate types)
                 amount = float(request.form.get('amount'))
                 current_mileage = float(request.form.get('mileage'))
                 price_per_liter = float(request.form.get('price_per_liter'))
                 total_price = float(request.form.get('total_price'))
-                # save the data
                 vehicle.refuel(amount, current_mileage, price_per_liter, total_price)
                 return redirect(url_for('fuel_vehicle', vehicle_id=vehicle.id))
             except ValueError as e: # handle errors
@@ -109,10 +106,34 @@ def create_app():
                 return render_template("fuel.html", vehicle=vehicle, error=error, refuel_history=refuel_history)
 
         if vehicle:
-            # give the data so it can be rendered
             refuel_history = RefuelHistory.get_fuel_mileage(vehicle_id)
             return render_template("fuel.html", vehicle=vehicle, refuel_history=refuel_history)
         else:
             return jsonify({'error': 'Vehicle not found'}), 404
+
+    @app.route('/update_refuel/<int:refuel_id>', methods=['GET', 'POST'])
+    def update_refuel(refuel_id):
+        refuel = RefuelHistory.query.get(refuel_id)
+        if request.method == 'POST':
+            try:
+                refuel.amount = float(request.form.get('amount'))
+                refuel.mileage = float(request.form.get('mileage'))
+                refuel.price_per_liter = float(request.form.get('price_per_liter'))
+                refuel.total_price = float(request.form.get('total_price'))
+                db.session.commit()
+                return redirect(url_for('fuel_vehicle', vehicle_id=refuel.vehicle_id))
+            except ValueError as e:
+                error = str(e)
+                return render_template("update_refuel.html", refuel=refuel, error=error)
+
+        return render_template("update_refuel.html", refuel=refuel)
+
+    @app.route('/delete_refuel/<int:refuel_id>', methods=['POST'])
+    def delete_refuel(refuel_id):
+        refuel = RefuelHistory.query.get(refuel_id)
+        vehicle_id = refuel.vehicle_id
+        db.session.delete(refuel)
+        db.session.commit()
+        return redirect(url_for('fuel_vehicle', vehicle_id=vehicle_id))
 
     return app

@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Refuel Vehicle</title>
     <style>
-        /* Add your CSS styles here */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -122,9 +121,31 @@
         .history-table tr:nth-child(even) {
             background-color: #f9f9f9;
         }
+
+        .edit-button, .delete-button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .delete-button {
+            background-color: #dc3545;
+        }
+
+        .edit-button:hover {
+            background-color: #218838;
+        }
+
+        .delete-button:hover {
+            background-color: #c82333;
+        }
     </style>
     <script>
-        // calculate the total price based on the amount and price per liter
         function calculateTotal() {
             var amount = parseFloat(document.getElementById('amount').value) || 0;
             var pricePerLiter = parseFloat(document.getElementById('price-per-liter').value) || 0;
@@ -165,6 +186,7 @@
                     <th>Price per Liter</th>
                     <th>Total Price</th>
                     <th>Fuel Mileage (L/100km)</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -176,6 +198,12 @@
                     <td>{{ '%.2f' | format(refuel.price_per_liter) }}</td>
                     <td>{{ '%.2f' | format(refuel.total_price) }}</td>
                     <td>{{ '%.1f' | format(fuel_mileage) if fuel_mileage is not none else 'N/A' }}</td>
+                    <td>
+                        <a href="{{ url_for('update_refuel', refuel_id=refuel.id) }}" class="edit-button">Edit</a>
+                        <form action="{{ url_for('delete_refuel', refuel_id=refuel.id) }}" method="POST" style="display:inline;">
+                            <button type="submit" class="delete-button">Delete</button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

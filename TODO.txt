@@ -4,8 +4,8 @@ fuel should be all done
 maybbe implement an edit function in case of a mistake but you could also leave it reliant on the main edit function
 of the vehicle
 
-todo: OPTIONAL
-    make it so that you can edit past refuels
+todo: {done :) } OPTIONAL
+    make it so that you can edit past refuels >:(
 
 todo: made some preperation for tests (implement them)
 
