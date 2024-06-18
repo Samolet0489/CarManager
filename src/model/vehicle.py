@@ -120,6 +120,8 @@ class Vehicle(db.Model):
 
     #todo add the remove button Mght have to do the inner info first {done? : check this}
     def delete_vehicle(self):
+        # Delete the refuel history records too
+        RefuelHistory.query.filter_by(vehicle_id=self.id).delete()
         db.session.delete(self)
         db.session.commit()
 

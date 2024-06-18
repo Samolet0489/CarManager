@@ -61,17 +61,14 @@ def create_app():
             vehicle_id = request.form.get("id")
             vehicle = Vehicle.query.get(vehicle_id)
             if vehicle:
-                db.session.delete(vehicle) # remove it from the database
-                # db.session.commit()
-                # return jsonify({'message': 'Vehicle deleted successfully'}), 200
-                return redirect("/vehicles",302)
+                print(f"Attempting to delete vehicle with ID {vehicle_id}")
+                vehicle.delete_vehicle()
+                return redirect("/vehicles", 302)
             else:
                 return jsonify({'error': 'Vehicle not found'}), 404
         except Exception as e:
-            print("Error:", str(e))
+            print(f"Error: {e}")
             return jsonify({'error': 'Failed to delete vehicle'}), 500
-        finally:
-            db.session.commit()
 
     @app.route('/edit_vehicle/<int:vehicle_id>', methods=['GET', 'POST'])
     def edit_vehicle(vehicle_id):
