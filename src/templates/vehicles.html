@@ -31,6 +31,13 @@
             color: #666;
         }
 
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
         #add-vehicle-btn {
             background-color: #007bff;
             color: #fff;
@@ -39,7 +46,6 @@
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
-            margin-bottom: 20px;
         }
 
         #add-vehicle-btn:hover {
@@ -54,7 +60,6 @@
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
-            margin-left: 10px;
         }
 
         #view-mechanics-btn:hover {
@@ -63,9 +68,10 @@
     </style>
 </head>
 <body>
-    <!-- Add button to redirect to /add URL -->
-    <button id="add-vehicle-btn" onclick="location.href='/add';">Add a Vehicle</button>
-    <button id="view-mechanics-btn" onclick="location.href='/mechanics';">View Mechanics</button>
+    <div class="button-container">
+        <button id="add-vehicle-btn" onclick="location.href='/add';">Add a Vehicle</button>
+        <button id="view-mechanics-btn" onclick="location.href='/mechanics';">View Mechanics</button>
+    </div>
 
     <div id="vehicle-container"></div>
 
