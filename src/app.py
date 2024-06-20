@@ -8,6 +8,7 @@ from .api.mechanicG import mechanic_api
 from .model.refuel_history import RefuelHistory
 from .model.vehicle import Vehicle
 from .model.important_dates import ImportantDates
+from .model.mechanic import Mechanic
 
 def create_app():
     app = Flask(__name__)
@@ -187,5 +188,10 @@ def create_app():
             return render_template("important_dates.html", vehicle=vehicle, important_dates=dates)
         else:
             return jsonify({'error': 'Vehicle not found'}), 404
+
+    @app.route('/mechanics') #addint something to do with the mechanics coz I said I have to
+    def mechanics():
+        mechanics_data = Mechanic.get_mechanic()
+        return render_template("mechanics.html", mechanics=mechanics_data)
 
     return app
