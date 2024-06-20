@@ -15,7 +15,7 @@ create_vehicle_model = frontendVehicle.model('Vehicle', {
     "color": fields.String(required=True, description='The color of the vehicle'),
     "expenses": fields.Float(required=False, description='The total expenses of the vehicle'),
     "mileage": fields.Integer(required=True, description='The milage of the vehicle'),
-    "fuel_consumption": fields.Float(required=False, description='The fuel consumption of the vehicle'),
+    "fuel_consumption": fields.Float(required=False, default=0,description='The fuel consumption of the vehicle'),
     "note": fields.String(required=False, description='Additional notes about the vehicle'),
 })
 

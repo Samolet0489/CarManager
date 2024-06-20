@@ -57,8 +57,6 @@
         <input type="number" id="expenses" placeholder="Enter expenses"><br><br>
         <label for="mileage">Mileage:</label>
         <input type="number" id="mileage" placeholder="Enter mileage"><br><br>
-        <label for="fuel_consumption">Fuel Consumption:</label>
-        <input type="number" id="fuel_consumption" step="0.1" placeholder="Enter fuel consumption"><br><br>
         <label for="note">Note:</label>
         <input type="text" id="note" placeholder="Enter note"><br><br>
         <button type="submit">Create Vehicle</button>
@@ -75,14 +73,9 @@
                 color: document.getElementById('color').value,
                 expenses: parseFloat(document.getElementById('expenses').value),
                 mileage: parseFloat(document.getElementById('mileage').value),
-                fuel_consumption: parseFloat(document.getElementById('fuel_consumption').value),
+                fuel_consumption: 0, // Set default value to 0
                 note: document.getElementById('note').value
             };
-
-
-            // console.log(formData)
-            // console.log(event)
-
 
             fetch('/save-vehicle', {
                 method: 'POST',
