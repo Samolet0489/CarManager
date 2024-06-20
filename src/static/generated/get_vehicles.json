@@ -2,7 +2,7 @@
     {
         "id": 12567016743,
         "name": "ss",
-        "color": "ss",
+        "color": "ss color",
         "expenses": 33.0,
         "mileage": 35500.0,
         "fuel_consumption": 5.6,
@@ -43,6 +43,15 @@
         "mileage": 2.0,
         "fuel_consumption": 2.0,
         "note": "2222"
+    },
+    {
+        "id": 72692528759,
+        "name": "BMW M5 Comp",
+        "color": "Black",
+        "expenses": 170000.0,
+        "mileage": 1400.0,
+        "fuel_consumption": 5.7,
+        "note": "This is a Beutiful car"
     },
     {
         "id": 82449112476,
