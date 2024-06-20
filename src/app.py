@@ -217,4 +217,36 @@ def create_app():
             print("Error:", str(e))
             return jsonify({'error': 'Failed to save mechanic data'}), 500
 
+    @app.route('/edit_mechanic/<int:mechanic_id>', methods=['GET', 'POST'])
+    def edit_mechanic(mechanic_id):
+        mechanic = Mechanic.query.get(mechanic_id)
+        if request.method == 'POST':
+            mechanic_data = request.json
+            try:
+                mechanic.name = mechanic_data["name"]
+                mechanic.address = mechanic_data["address"]
+                mechanic.email = mechanic_data["email"]
+                mechanic.phone = mechanic_data["phone"]
+                mechanic.hourly_rate = mechanic_data["hourly_rate"]
+                mechanic.note = mechanic_data["note"]
+                db.session.commit()
+                return jsonify({'message': 'Mechanic updated successfully'}), 200
+            except Exception as e:
+                print("Error:", str(e))
+                return jsonify({'error': 'Failed to update mechanic data'}), 500
+        return render_template("edit_mechanic.html", mechanic=mechanic)
+
+    @app.route('/delete_mechanic/<int:mechanic_id>', methods=['POST'])
+    def delete_mechanic(mechanic_id):
+        try:
+            mechanic = Mechanic.query.get(mechanic_id)
+            if mechanic:
+                mechanic.delete_mechanic()
+                return jsonify({'message': 'Mechanic deleted successfully'}), 200
+            else:
+                return jsonify({'error': 'Mechanic not found'}), 404
+        except Exception as e:
+            print("Error:", str(e))
+            return jsonify({'error': 'Failed to delete mechanic'}), 500
+
     return app

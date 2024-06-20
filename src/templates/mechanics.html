@@ -76,6 +76,33 @@
             justify-content: space-between;
             margin-bottom: 20px;
         }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .edit-button, .delete-button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .delete-button {
+            background-color: #dc3545;
+        }
+
+        .edit-button:hover {
+            background-color: #218838;
+        }
+
+        .delete-button:hover {
+            background-color: #c82333;
+        }
     </style>
 </head>
 <body>
@@ -94,6 +121,7 @@
                     <th>Phone</th>
                     <th>Hourly Rate</th>
                     <th>Note</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -105,10 +133,41 @@
                     <td>{{ mechanic.phone }}</td>
                     <td>{{ mechanic.hourly_rate }}</td>
                     <td>{{ mechanic.note }}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="edit-button" onclick="location.href='/edit_mechanic/{{ mechanic.id }}';">Edit</button>
+                            <button class="delete-button" onclick="deleteMechanic({{ mechanic.id }});">Delete</button>
+                        </div>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+
+    <script>
+        function deleteMechanic(id) {
+            if (confirm('Are you sure you want to delete this mechanic?')) {
+                fetch(`/delete_mechanic/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Mechanic deleted successfully!');
+                        window.location.reload();
+                    } else {
+                        throw new Error('Failed to delete mechanic');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting mechanic:', error);
+                    alert('Failed to delete mechanic. Please try again.');
+                });
+            }
+        }
+    </script>
 </body>
 </html>

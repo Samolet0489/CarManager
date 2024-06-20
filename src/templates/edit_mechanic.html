@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Mechanic</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Edit Mechanic</h1>
+    <form id="edit-mechanic-form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" value="{{ mechanic.name }}" required><br><br>
+        <label for="address">Address:</label>
+        <input type="text" id="address" value="{{ mechanic.address }}" required><br><br>
+        <label for="email">Email:</label>
+        <input type="text" id="email" value="{{ mechanic.email }}" required><br><br>
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" value="{{ mechanic.phone }}" required><br><br>
+        <label for="hourly_rate">Hourly Rate:</label>
+        <input type="number" id="hourly_rate" step="0.01" value="{{ mechanic.hourly_rate }}" required><br><br>
+        <label for="note">Note:</label>
+        <input type="text" id="note" value="{{ mechanic.note }}"><br><br>
+        <button type="submit">Update Mechanic</button>
+        <button type="button" onclick="location.href='/mechanics';">Back</button>
+    </form>
+
+    <script>
+        document.getElementById('edit-mechanic-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = {
+                name: document.getElementById('name').value,
+                address: document.getElementById('address').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                hourly_rate: parseFloat(document.getElementById('hourly_rate').value),
+                note: document.getElementById('note').value
+            };
+
+            fetch(`/edit_mechanic/{{ mechanic.id }}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Mechanic updated successfully!');
+                    window.location.href = '/mechanics';
+                } else {
+                    throw new Error('Failed to update mechanic');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating mechanic:', error);
+                alert('Failed to update mechanic. Please try again.');
+            });
+        });
+    </script>
+</body>
+</html>
