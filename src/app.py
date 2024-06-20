@@ -194,4 +194,27 @@ def create_app():
         mechanics_data = Mechanic.get_mechanic()
         return render_template("mechanics.html", mechanics=mechanics_data)
 
+    @app.route('/add_mechanic')
+    def add_mechanic_form():
+        return render_template("add_mechanic.html")
+
+    @app.route('/save_mechanic', methods=['POST'])
+    def save_mechanic():
+        mechanic_data = request.json
+        try:
+            new_mechanic = Mechanic(
+                id=Mechanic.give_me_id(),
+                name=mechanic_data["name"],
+                address=mechanic_data["address"],
+                email=mechanic_data["email"],
+                phone=mechanic_data["phone"],
+                hourly_rate=mechanic_data["hourly_rate"],
+                note=mechanic_data["note"]
+            )
+            new_mechanic.add_mechanic()
+            return jsonify({'message': 'Mechanic data saved successfully'}), 200
+        except Exception as e:
+            print("Error:", str(e))
+            return jsonify({'error': 'Failed to save mechanic data'}), 500
+
     return app

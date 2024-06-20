@@ -53,9 +53,36 @@
         .mechanics-table tr:nth-child(even) {
             background-color: #f9f9f9;
         }
+
+        .back-button,
+        .add-mechanic-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .back-button:hover,
+        .add-mechanic-button:hover {
+            background-color: #0056b3;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
+    <div class="button-container">
+        <button class="back-button" onclick="location.href='/vehicles';">Back</button>
+        <button class="add-mechanic-button" onclick="location.href='/add_mechanic';">Add Mechanic</button>
+    </div>
     <div class="mechanics-container">
         <h2>Mechanics</h2>
         <table class="mechanics-table">
