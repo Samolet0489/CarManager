@@ -66,9 +66,25 @@
             margin-bottom: 20px;
             text-align: center;
         }
+
+        #back-btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        #back-btn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
+    <button id="back-btn" onclick="window.location.href = '/{{ vehicle.name }}/info';">Back</button>
     <div class="dates-container">
         <h2>Important Dates for {{ vehicle.name }}</h2>
         {% if error %}
