@@ -4,21 +4,20 @@ from src.database import db
 from flask_restx import Namespace, fields
 from random import randint
 from .refuel_history import RefuelHistory
+from .important_dates import ImportantDates
 from flask import jsonify
 
 frontendVehicle = Namespace('vehicle', description='Vehicle related operations')
-# adding a model so that I can send the data to the
 create_vehicle_model = frontendVehicle.model('Vehicle', {
     "name": fields.String(required=True, description='Give the vehicle a name'),
     "color": fields.String(required=True, description='The color of the vehicle'),
     "expenses": fields.Float(required=False, description='The total expenses of the vehicle'),
     "mileage": fields.Integer(required=True, description='The milage of the vehicle'),
-    "fuel_consumption": fields.Float(required=False, description='The fuel consumption of the vehicle'), # rn not in use
+    "fuel_consumption": fields.Float(required=False, description='The fuel consumption of the vehicle'),
     "note": fields.String(required=False, description='Additional notes about the vehicle'),
 })
 
 class Vehicle(db.Model):
-
     __tablename__ = 'vehicle'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30), nullable=False)
@@ -29,22 +28,19 @@ class Vehicle(db.Model):
     note = db.Column(db.String(500), nullable=True)
 
     refuel_history = db.relationship('RefuelHistory', back_populates='vehicle')
+    important_dates = db.relationship('ImportantDates', back_populates='vehicle', uselist=False)
 
-    # def repr(self):  # This makes it into a string representation
-    #     return f'Vehicle {self.make} {self.model}'
-
-    #todo make sure that the model fits this
     def __init__(self, id: int, name: str, color: str, expenses: float, mileage: float, note: str):
         self.id = id
-        self.name = name # here people can call their vehicle however they want
-        self.color = color  # people can set the exact color of the vehicle (in case of an accident the mechanic knows the paint)
-        self.expenses = expenses # total expenses (just adding up all expenses ever accumulated)
+        self.name = name
+        self.color = color
+        self.expenses = expenses
         self.mileage = mileage
-        self.fuel_consumption = 0 # TODO: now just needs to be added to the "fill up" method in vehicleG
-        self.note = note # people can write a note with additional information about the car
-        # feel free to add other info
+        self.fuel_consumption = 0
+        self.note = note
 
     def dict_data(self):
+        important_dates_data = ImportantDates.query.filter_by(vehicle_id=self.id).first()
         return {
             'id': self.id,
             'name': self.name,
@@ -52,18 +48,23 @@ class Vehicle(db.Model):
             'expenses': self.expenses,
             'mileage': self.mileage,
             'fuel_consumption': self.fuel_consumption,
-            'note': self.note
+            'note': self.note,
+            'important_dates': {
+                'car_tax': important_dates_data.car_tax.strftime('%Y-%m-%d') if important_dates_data and important_dates_data.car_tax else None,
+                'annual_insurance': important_dates_data.annual_insurance.strftime('%Y-%m-%d') if important_dates_data and important_dates_data.annual_insurance else None,
+                'technical_review': important_dates_data.technical_review.strftime('%Y-%m-%d') if important_dates_data and important_dates_data.technical_review else None,
+                'vignette': important_dates_data.vignette.strftime('%Y-%m-%d') if important_dates_data and important_dates_data.vignette else None,
+                'additional_insurance': important_dates_data.additional_insurance.strftime('%Y-%m-%d') if important_dates_data and important_dates_data.additional_insurance else None
+            }
         }
 
     @staticmethod
     def give_me_id():
         try:
-            ids = [vehicle.id for vehicle in Vehicle.query.all()] # we retrieve the IDs
-            # print(ids)
-            # print(type(ids[0]))
-            new_id  = randint(0,99999999999)
-            while new_id  in ids:
-                new_id  = randint(0, 99999999999)
+            ids = [vehicle.id for vehicle in Vehicle.query.all()]
+            new_id = randint(0, 99999999999)
+            while new_id in ids:
+                new_id = randint(0, 99999999999)
             return new_id
         except Exception as e:
             print("Error:", e)
@@ -73,16 +74,12 @@ class Vehicle(db.Model):
         db.session.add(self)
         db.session.commit()
 
-
     @staticmethod
     def get_vehicles():
         data = Vehicle.query.all()
-
         vehicles_json = [v.dict_data() for v in data]
-
         with open("src/static/generated/get_vehicles.json", "w") as f:
-            f.write(json.dumps(vehicles_json,indent=4))
-
+            f.write(json.dumps(vehicles_json, indent=4))
         return data
 
     def _fuel_consumption(self, fuel: float, mileage: float, current_mileage: float):
@@ -93,12 +90,8 @@ class Vehicle(db.Model):
         with open("./src/static/generated/create_vehicle.json", "r") as f:
             data = f.read()
             data_dict = json.loads(data)
-            print(data_dict)
-            print(type(data_dict))
 
-        # temp solution for creating a  bad ID:
-        from random import randint
-        id = Vehicle.give_me_id() #make THE ID SYSTEM!!!!!!
+        id = Vehicle.give_me_id()
 
         new_vehicle = Vehicle(id=id,
                               name=data_dict["name"],
@@ -107,15 +100,12 @@ class Vehicle(db.Model):
                               mileage=data_dict['mileage'],
                               note=data_dict["note"])
 
-        # this works for now
         db.session.add(new_vehicle)
         db.session.commit()
-        print("Vehicle added successfully")
 
-    #todo add the remove button Mght have to do the inner info first {done? : check this}
     def delete_vehicle(self):
-        # Delete all associated refuel history records
         RefuelHistory.query.filter_by(vehicle_id=self.id).delete()
+        ImportantDates.query.filter_by(vehicle_id=self.id).delete()
         db.session.delete(self)
         db.session.commit()
 
@@ -133,22 +123,11 @@ class Vehicle(db.Model):
         if note is not None:
             self.note = note
         db.session.commit()
-        print("Vehicle updated successfully")
 
-
-    # does the car need to know about the mechanic? probably not
-    def add_mechanic(self):
-        # add a way to set the mechanic to the vehicle.
-        pass
-
-
-# FUEL operations:
     def refuel(self, amount: float, current_mileage: float, price_per_liter: float, total_price: float):
-        # Check if the new mileage is less than the previous mileage
         if current_mileage < self.mileage:
             raise ValueError('Current mileage cannot be less than the previous mileage.')
 
-        # Calculate fuel consumption
         liters_used = amount
         if self.mileage != current_mileage:
             fuel_consumption = (liters_used / (current_mileage - self.mileage)) * 100
@@ -156,7 +135,6 @@ class Vehicle(db.Model):
         else:
             fuel_consumption = 0
 
-        # Update vehicle's fuel consumption and mileage
         self.fuel_consumption = fuel_consumption
         self.mileage = current_mileage
 
@@ -173,10 +151,3 @@ class Vehicle(db.Model):
 
     def get_refuel_history(self):
         return RefuelHistory.query.filter_by(vehicle_id=self.id).all()
-
-
-    ##this might be quite important or completely useless todo think about this
-    # def set_owner(self):
-    #     pass # the car does not need to know about its owner
-
-

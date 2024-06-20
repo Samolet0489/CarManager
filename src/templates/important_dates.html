@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Important Dates</title>
+    <style>
+        /* Add your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        .dates-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .dates-container h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        .dates-container label {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        .dates-container input {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        .dates-container button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 15px 25px;
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .dates-container button:hover {
+            background-color: #0056b3;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 18px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="dates-container">
+        <h2>Important Dates for {{ vehicle.name }}</h2>
+        {% if error %}
+            <p class="error-message">{{ error }}</p>
+        {% endif %}
+        <form method="POST">
+            <label for="car-tax">Car Tax:</label>
+            <input type="date" id="car-tax" name="car_tax" value="{{ important_dates.car_tax }}">
+
+            <label for="annual-insurance">Annual Insurance:</label>
+            <input type="date" id="annual-insurance" name="annual_insurance" value="{{ important_dates.annual_insurance }}">
+
+            <label for="technical-review">Technical Review:</label>
+            <input type="date" id="technical-review" name="technical_review" value="{{ important_dates.technical_review }}">
+
+            <label for="vignette">Vignette:</label>
+            <input type="date" id="vignette" name="vignette" value="{{ important_dates.vignette }}">
+
+            <label for="additional-insurance">Additional Insurance:</label>
+            <input type="date" id="additional-insurance" name="additional_insurance" value="{{ important_dates.additional_insurance }}">
+
+            <button type="submit">Save Important Dates</button>
+        </form>
+    </div>
+</body>
+</html>

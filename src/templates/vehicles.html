@@ -83,6 +83,11 @@
                         <p><strong>Name:</strong> ${vehicle.name}</p>
                         <p><strong>Fuel Consumption:</strong> ${vehicle.fuel_consumption.toFixed(1)}</p>
                         <p><strong>Mileage:</strong> ${vehicle.mileage.toFixed(1)}</p>
+                        <p><strong>Car Tax:</strong> ${vehicle.important_dates.car_tax || 'N/A'}</p>
+                        <p><strong>Annual Insurance:</strong> ${vehicle.important_dates.annual_insurance || 'N/A'}</p>
+                        <p><strong>Technical Review:</strong> ${vehicle.important_dates.technical_review || 'N/A'}</p>
+                        <p><strong>Vignette:</strong> ${vehicle.important_dates.vignette || 'N/A'}</p>
+                        <p><strong>Additional Insurance:</strong> ${vehicle.important_dates.additional_insurance || 'N/A'}</p>
                     `;
 
                     // Append elements to the container

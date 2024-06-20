@@ -6,16 +6,30 @@
         "expenses": 33.0,
         "mileage": 35500.0,
         "fuel_consumption": 5.6,
-        "note": "This was just an S and the millage was 33"
+        "note": "This was just an S and the millage was 33",
+        "important_dates": {
+            "car_tax": "N/A",
+            "annual_insurance": "N/A",
+            "technical_review": "N/A",
+            "vignette": "N/A",
+            "additional_insurance": "N/A"
+        }
     },
     {
         "id": 13104289162,
         "name": "Bmw",
         "color": "white",
         "expenses": 220000.0,
-        "mileage": 142000.0,
-        "fuel_consumption": 7.5,
-        "note": "This is a car"
+        "mileage": 142700.0,
+        "fuel_consumption": 8.1,
+        "note": "This is a car",
+        "important_dates": {
+            "car_tax": "2024-06-07",
+            "annual_insurance": "2024-06-21",
+            "technical_review": "2024-06-18",
+            "vignette": "2024-06-28",
+            "additional_insurance": "2024-06-06"
+        }
     },
     {
         "id": 47754974508,
@@ -24,7 +38,14 @@
         "expenses": 2.0,
         "mileage": 3.0,
         "fuel_consumption": 4.0,
-        "note": "imagine"
+        "note": "imagine",
+        "important_dates": {
+            "car_tax": "N/A",
+            "annual_insurance": "N/A",
+            "technical_review": "N/A",
+            "vignette": "N/A",
+            "additional_insurance": "N/A"
+        }
     },
     {
         "id": 61769964127,
@@ -33,7 +54,14 @@
         "expenses": 0.0,
         "mileage": 0.0,
         "fuel_consumption": 0.0,
-        "note": "string"
+        "note": "string",
+        "important_dates": {
+            "car_tax": "N/A",
+            "annual_insurance": "N/A",
+            "technical_review": "N/A",
+            "vignette": "N/A",
+            "additional_insurance": "N/A"
+        }
     },
     {
         "id": 70304543051,
@@ -42,7 +70,14 @@
         "expenses": 2.0,
         "mileage": 2.0,
         "fuel_consumption": 2.0,
-        "note": "2222"
+        "note": "2222",
+        "important_dates": {
+            "car_tax": "N/A",
+            "annual_insurance": "N/A",
+            "technical_review": "N/A",
+            "vignette": "N/A",
+            "additional_insurance": "N/A"
+        }
     },
     {
         "id": 72692528759,
@@ -51,7 +86,14 @@
         "expenses": 170000.0,
         "mileage": 1400.0,
         "fuel_consumption": 5.7,
-        "note": "This is a Beutiful car"
+        "note": "This is a Beutiful car",
+        "important_dates": {
+            "car_tax": "N/A",
+            "annual_insurance": "N/A",
+            "technical_review": "N/A",
+            "vignette": "N/A",
+            "additional_insurance": "N/A"
+        }
     },
     {
         "id": 82449112476,
@@ -60,7 +102,14 @@
         "expenses": 33000.0,
         "mileage": 333333.0,
         "fuel_consumption": 0.0,
-        "note": "another Car"
+        "note": "another Car",
+        "important_dates": {
+            "car_tax": "N/A",
+            "annual_insurance": "N/A",
+            "technical_review": "N/A",
+            "vignette": "N/A",
+            "additional_insurance": "N/A"
+        }
     },
     {
         "id": 83484253042,
@@ -69,6 +118,13 @@
         "expenses": 43000.0,
         "mileage": 66000.0,
         "fuel_consumption": 0.0,
-        "note": "This is a nice car"
+        "note": "This is a nice car",
+        "important_dates": {
+            "car_tax": "N/A",
+            "annual_insurance": "N/A",
+            "technical_review": "N/A",
+            "vignette": "N/A",
+            "additional_insurance": "N/A"
+        }
     }
 ]

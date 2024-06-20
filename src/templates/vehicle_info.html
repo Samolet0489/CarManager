@@ -46,7 +46,7 @@
             gap: 10px;
         }
 
-        #back-btn, #edit-btn, #delete-btn, #fuel-btn {
+        #back-btn, #edit-btn, #delete-btn, #fuel-btn, #dates-btn {
             background-color: #007bff;
             color: #fff;
             border: none;
@@ -56,11 +56,11 @@
             cursor: pointer;
         }
 
-        #back-btn:hover, #edit-btn:hover, #delete-btn:hover, #fuel-btn:hover {
+        #back-btn:hover, #edit-btn:hover, #delete-btn:hover, #fuel-btn:hover, #dates-btn:hover {
             background-color: #0056b3;
         }
 
-        #fuel-btn {
+        #fuel-btn, #dates-btn {
             display: block;
             width: 100%;
             margin-top: 20px;
@@ -99,8 +99,20 @@
         <p class="detail-value">{{ '%.1f' | format(vehicle.fuel_consumption) }}</p>
         <p class="detail-label">Note:</p>
         <p class="detail-value">{{ vehicle.note }}</p>
+        <p class="detail-label">Car Tax:</p>
+        <p class="detail-value">{{ important_dates.car_tax }}</p>
+        <p class="detail-label">Annual Insurance:</p>
+        <p class="detail-value">{{ important_dates.annual_insurance }}</p>
+        <p class="detail-label">Technical Review:</p>
+        <p class="detail-value">{{ important_dates.technical_review }}</p>
+        <p class="detail-label">Vignette:</p>
+        <p class="detail-value">{{ important_dates.vignette }}</p>
+        <p class="detail-label">Additional Insurance:</p>
+        <p class="detail-value">{{ important_dates.additional_insurance }}</p>
         <!-- Fuel button -->
         <button id="fuel-btn" onclick="window.location.href = '/fuel_vehicle/{{ vehicle.id }}';">Refuel</button>
+        <!-- Important Dates button -->
+        <button id="dates-btn" onclick="window.location.href = '/important_dates/{{ vehicle.id }}';">Edit Important Dates</button>
     </div>
 </body>
 </html>
