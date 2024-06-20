@@ -90,12 +90,12 @@ def create_app():
     @app.route('/delete_vehicle', methods=['POST']) # now this works
     def delete_vehicle():  # a way to remove the vehicles
         try:
-            vehicle_id = request.form.get("id")
-            vehicle = Vehicle.query.get(vehicle_id)
+            vehicle_name = request.json.get("name")
+            vehicle = Vehicle.query.filter_by(name=vehicle_name).first()
             if vehicle:
                 # print(f"Attempting to delete vehicle with ID: {vehicle_id}")
                 vehicle.delete_vehicle()
-                return redirect("/vehicles", 302)
+                return jsonify({'message': 'Vehicle deleted successfully'}), 200
             else:
                 return jsonify({'error': 'Vehicle not found'}), 404
         except Exception as e:

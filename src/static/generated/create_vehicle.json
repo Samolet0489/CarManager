@@ -1,7 +1,8 @@
 {
-    "color": "Blue",
-    "expenses": 1000.0,
-    "mileage": 10000,
-    "name": "Test Car",
-    "note": "Test Note"
+    "name": "BMW M5 Comp",
+    "color": "Black",
+    "expenses": 80000,
+    "mileage": 40000,
+    "fuel_consumption": 0,
+    "note": "This is a Beutiful car"
 }
