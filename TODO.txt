@@ -1,3 +1,10 @@
+200724:
+add a back button to the important dates HTMl
+ensure that the dates work properly and potentially add some logic with the dates. to do somethign cool
+there is still nothing about the OIL!!!!!!
+and then you might think of something cool to do with the mechanics
+
+RN: Go get food :p
 
 150724:
 fuel should be all done

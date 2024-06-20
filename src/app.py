@@ -12,6 +12,7 @@ from .model.important_dates import ImportantDates
 def create_app():
     app = Flask(__name__)
 
+    #Configure the database
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///vehicles.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -19,13 +20,14 @@ def create_app():
     with app.app_context():
         db.create_all()
 
-    api = Api(app)
+    api = Api(app) # initialize the Flask api
 
+    # add the vehicle_api to the API this isnt really used accept for some early testing
     api.add_namespace(vehicle_api)
     api.add_namespace(mechanic_api)
 
     @app.route('/vehicles')
-    def index():
+    def index(): #load the defult page for seeing our vehicles
         vehicles = Vehicle.get_vehicles()
         vehicles_with_dates = []
         for vehicle in vehicles:
@@ -52,46 +54,49 @@ def create_app():
         with open("src/static/generated/get_vehicles.json", "w") as f:
             f.write(json.dumps(vehicles_with_dates, indent=4))
 
+        # pass vehicles to the template
         return render_template("vehicles.html", vehicles=vehicles_with_dates)
 
     @app.route('/<vehicle_name>/info')
     def vehicle_info(vehicle_name):
         vehicle = Vehicle.query.filter_by(name=vehicle_name).first()
         dates = ImportantDates.query.filter_by(vehicle_id=vehicle.id).first()
-        db.session.close()
+        db.session.close() # this might be a headache
         if vehicle:
             return render_template("vehicle_info.html", vehicle=vehicle, important_dates=dates)
         else:
             return jsonify({'error': 'Vehicle not found'}), 404
 
     @app.route('/add')
-    def index2():
+    def index2(): # load the page for adding vehicles
         return render_template("create_vehicle.html")
 
     @app.route('/save-vehicle', methods=['POST'])
     def save_vehicle():
         vehicle_data = request.json
         try:
-            file_path = 'src/static/generated/create_vehicle.json'
+            file_path = 'src/static/generated/create_vehicle.json' # for some reason the scope is so far out
             with open(file_path, 'w') as file:
                 json.dump(vehicle_data, file, indent=4)
             Vehicle.add_vehicle_to_db(vehicle_data)
             return jsonify({'message': 'Vehicle data saved successfully'}), 200
-        except Exception as e:
+        except Exception as e: # Print the error to the console
             print("Error:", str(e))
             return jsonify({'error': 'Failed to save vehicle data'}), 500
 
-    @app.route('/delete_vehicle', methods=['POST'])
-    def delete_vehicle():
+    @app.route('/delete_vehicle', methods=['POST']) # now this works
+    def delete_vehicle():  # a way to remove the vehicles
         try:
             vehicle_id = request.form.get("id")
             vehicle = Vehicle.query.get(vehicle_id)
             if vehicle:
+                # print(f"Attempting to delete vehicle with ID: {vehicle_id}")
                 vehicle.delete_vehicle()
                 return redirect("/vehicles", 302)
             else:
                 return jsonify({'error': 'Vehicle not found'}), 404
         except Exception as e:
+            # print("Error:", str(e))
             return jsonify({'error': 'Failed to delete vehicle'}), 500
 
     @app.route('/edit_vehicle/<int:vehicle_id>', methods=['GET', 'POST'])
@@ -115,18 +120,21 @@ def create_app():
         vehicle = Vehicle.query.get(vehicle_id)
         if request.method == 'POST':
             try:
+                # get the data (make sure its appropariate types)
                 amount = float(request.form.get('amount'))
                 current_mileage = float(request.form.get('mileage'))
                 price_per_liter = float(request.form.get('price_per_liter'))
                 total_price = float(request.form.get('total_price'))
+                # save the data
                 vehicle.refuel(amount, current_mileage, price_per_liter, total_price)
                 return redirect(url_for('fuel_vehicle', vehicle_id=vehicle.id))
-            except ValueError as e:
+            except ValueError as e: # handle the errors
                 error = str(e)
                 refuel_history = RefuelHistory.get_fuel_mileage(vehicle_id)
                 return render_template("fuel.html", vehicle=vehicle, error=error, refuel_history=refuel_history)
 
         if vehicle:
+            # give the data so it can be rendered
             refuel_history = RefuelHistory.get_fuel_mileage(vehicle_id)
             return render_template("fuel.html", vehicle=vehicle, refuel_history=refuel_history)
         else:
