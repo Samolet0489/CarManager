@@ -29,6 +29,7 @@ def create_app():
     @app.route('/vehicles')
     def index(): #load the defult page for seeing our vehicles
         vehicles = Vehicle.get_vehicles()
+        # Fetch important dates for each vehicle
         vehicles_with_dates = []
         for vehicle in vehicles:
             dates = ImportantDates.query.filter_by(vehicle_id=vehicle.id).first()
@@ -51,6 +52,7 @@ def create_app():
                 }
             vehicles_with_dates.append(vehicle_data)
 
+        # Save updated data with important dates to JSON file
         with open("src/static/generated/get_vehicles.json", "w") as f:
             f.write(json.dumps(vehicles_with_dates, indent=4))
 
@@ -163,7 +165,7 @@ def create_app():
             return jsonify({'error': 'Refuel record not found'}), 404
 
     @app.route('/important_dates/<int:vehicle_id>', methods=['GET', 'POST'])
-    def important_dates(vehicle_id):
+    def important_dates_route(vehicle_id):
         vehicle = Vehicle.query.get(vehicle_id)
         if request.method == 'POST':
             try:
@@ -173,31 +175,15 @@ def create_app():
                 vignette = request.form.get('vignette')
                 additional_insurance = request.form.get('additional_insurance')
 
-                car_tax_date = datetime.strptime(car_tax, '%Y-%m-%d').date() if car_tax else None
-                annual_insurance_date = datetime.strptime(annual_insurance, '%Y-%m-%d').date() if annual_insurance else None
-                technical_review_date = datetime.strptime(technical_review, '%Y-%m-%d').date() if technical_review else None
-                vignette_date = datetime.strptime(vignette, '%Y-%m-%d').date() if vignette else None
-                additional_insurance_date = datetime.strptime(additional_insurance, '%Y-%m-%d').date() if additional_insurance else None
+                dates = ImportantDates.update_important_dates(vehicle_id, car_tax, annual_insurance, technical_review, vignette, additional_insurance)
 
-                dates = ImportantDates.query.filter_by(vehicle_id=vehicle_id).first()
-                if not dates:
-                    dates = ImportantDates(vehicle_id=vehicle_id)
-
-                dates.car_tax = car_tax_date
-                dates.annual_insurance = annual_insurance_date
-                dates.technical_review = technical_review_date
-                dates.vignette = vignette_date
-                dates.additional_insurance = additional_insurance_date
-
-                db.session.add(dates)
-                db.session.commit()
                 return redirect(url_for('vehicle_info', vehicle_name=vehicle.name))
             except ValueError as e:
                 error = str(e)
                 return render_template("important_dates.html", vehicle=vehicle, important_dates=dates, error=error)
 
         if vehicle:
-            dates = ImportantDates.query.filter_by(vehicle_id=vehicle_id).first()
+            dates = ImportantDates.get_important_dates(vehicle_id)
             return render_template("important_dates.html", vehicle=vehicle, important_dates=dates)
         else:
             return jsonify({'error': 'Vehicle not found'}), 404

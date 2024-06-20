@@ -20,3 +20,30 @@ class ImportantDates(db.Model):
         self.technical_review = technical_review
         self.vignette = vignette
         self.additional_insurance = additional_insurance
+
+    @staticmethod
+    def get_important_dates(vehicle_id):
+        return ImportantDates.query.filter_by(vehicle_id=vehicle_id).first()
+
+    @staticmethod
+    def update_important_dates(vehicle_id, car_tax, annual_insurance, technical_review, vignette, additional_insurance):
+        car_tax_date = datetime.strptime(car_tax, '%Y-%m-%d').date() if car_tax else None
+        annual_insurance_date = datetime.strptime(annual_insurance, '%Y-%m-%d').date() if annual_insurance else None
+        technical_review_date = datetime.strptime(technical_review, '%Y-%m-%d').date() if technical_review else None
+        vignette_date = datetime.strptime(vignette, '%Y-%m-%d').date() if vignette else None
+        additional_insurance_date = datetime.strptime(additional_insurance, '%Y-%m-%d').date() if additional_insurance else None
+
+        dates = ImportantDates.query.filter_by(vehicle_id=vehicle_id).first()
+        if not dates:
+            dates = ImportantDates(vehicle_id=vehicle_id)
+
+        dates.car_tax = car_tax_date
+        dates.annual_insurance = annual_insurance_date
+        dates.technical_review = technical_review_date
+        dates.vignette = vignette_date
+        dates.additional_insurance = additional_insurance_date
+
+        db.session.add(dates)
+        db.session.commit()
+
+        return dates
