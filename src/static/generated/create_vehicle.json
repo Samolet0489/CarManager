@@ -1,7 +1,8 @@
 {
-    "color": "Red",
-    "expenses": 1500.0,
-    "mileage": 15000,
-    "name": "Test Car",
-    "note": "Updated Test Note"
+    "name": "333",
+    "color": "3333",
+    "expenses": 3333,
+    "mileage": 333333,
+    "fuel_consumption": 0,
+    "note": "33333"
 }

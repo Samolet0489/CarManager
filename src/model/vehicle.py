@@ -32,6 +32,7 @@ class Vehicle(db.Model):
 
     refuel_history = db.relationship('RefuelHistory', back_populates='vehicle')
     important_dates = db.relationship('ImportantDates', back_populates='vehicle', uselist=False)
+    oil_statuses = db.relationship('OilStatus', back_populates='vehicle')
 
     def __init__(self, id: int, name: str, color: str, expenses: float, mileage: float, note: str):
         self.id = id
@@ -45,6 +46,7 @@ class Vehicle(db.Model):
 
     def dict_data(self):
         important_dates_data = ImportantDates.query.filter_by(vehicle_id=self.id).first()
+        oil_statuses_data = OilStatus.query.filter_by(vehicle_id=self.id).all()
         return {
             'id': self.id,
             'name': self.name,
@@ -59,7 +61,15 @@ class Vehicle(db.Model):
                 'technical_review': important_dates_data.technical_review.strftime('%Y-%m-%d') if important_dates_data and important_dates_data.technical_review else None,
                 'vignette': important_dates_data.vignette.strftime('%Y-%m-%d') if important_dates_data and important_dates_data.vignette else None,
                 'additional_insurance': important_dates_data.additional_insurance.strftime('%Y-%m-%d') if important_dates_data and important_dates_data.additional_insurance else None
-            }
+            },
+            'oil_statuses': [
+                {
+                    'date_of_change': oil_status.date_of_change.strftime('%Y-%m-%d'),
+                    'mileage_when_changed': oil_status.mileage_when_changed,
+                    'note': oil_status.note
+                }
+                for oil_status in oil_statuses_data
+            ]
         }
 
     @staticmethod
@@ -112,8 +122,11 @@ class Vehicle(db.Model):
         RefuelHistory.query.filter_by(vehicle_id=self.id).delete()
         # Delete all associated important dates records
         ImportantDates.query.filter_by(vehicle_id=self.id).delete()
+        # Delete all associated oil status records
+        OilStatus.query.filter_by(vehicle_id=self.id).delete()
         db.session.delete(self)
         db.session.commit()
+
 
     def edit_vehicle(self, name: Optional[str] = None, color: Optional[str] = None, expenses: Optional[float] = None, mileage: Optional[float] = None, fuel_consumption: Optional[float] = None, note: Optional[str] = None):
         if name is not None:
@@ -167,6 +180,26 @@ class Vehicle(db.Model):
     def get_refuel_history(self):
         return RefuelHistory.query.filter_by(vehicle_id=self.id).all()
 
+
     # this might be quite important or completely useless todo think about this
     # def set_owner(self):
     #     pass  # the car does not need to know about its owner
+
+
+
+class OilStatus(db.Model):
+    __tablename__ = 'oil_status'
+    id = db.Column(db.Integer, primary_key=True)
+    vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=False)
+    date_of_change = db.Column(db.Date, nullable=False)
+    mileage_when_changed = db.Column(db.Integer, nullable=False)
+    note = db.Column(db.String(500), nullable=True)
+
+    vehicle = db.relationship('Vehicle', back_populates='oil_statuses')
+
+    def __init__(self, vehicle_id, date_of_change, mileage_when_changed, note=None):
+        self.vehicle_id = vehicle_id
+        self.date_of_change = date_of_change
+        self.mileage_when_changed = mileage_when_changed
+        self.note = note
+

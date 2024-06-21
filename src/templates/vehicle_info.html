@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vehicle Information</title>
     <style>
-        /* Add your CSS styles here */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             padding: 20px;
         }
 
-        .vehicle-details {
+        .vehicle-details, .oil-status {
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -35,6 +34,11 @@
             color: #333;
         }
 
+        .warn-oil-change {
+            color: red;
+            font-weight: bold;
+        }
+
         #button-container {
             display: flex;
             justify-content: space-between;
@@ -46,21 +50,21 @@
             gap: 10px;
         }
 
-        #back-btn, #edit-btn, #delete-btn, #fuel-btn, #dates-btn {
+        #back-btn, #edit-btn, #delete-btn, #fuel-btn, #dates-btn, #oil-change-btn {
             background-color: #007bff;
             color: #fff;
             border: none;
             border-radius: 8px;
-            padding: 15px 25px; /* Increased padding for larger buttons */
-            font-size: 18px; /* Increased font size for larger buttons */
+            padding: 15px 25px;
+            font-size: 18px;
             cursor: pointer;
         }
 
-        #back-btn:hover, #edit-btn:hover, #delete-btn:hover, #fuel-btn:hover, #dates-btn:hover {
+        #back-btn:hover, #edit-btn:hover, #delete-btn:hover, #fuel-btn:hover, #dates-btn:hover, #oil-change-btn:hover {
             background-color: #0056b3;
         }
 
-        #fuel-btn, #dates-btn {
+        #fuel-btn, #dates-btn, #oil-change-btn {
             display: block;
             width: 100%;
             margin-top: 20px;
@@ -68,17 +72,10 @@
     </style>
 </head>
 <body>
-    <!-- Button container -->
     <div id="button-container">
-        <!-- Back button -->
         <button id="back-btn" onclick="window.location.href = '/vehicles';">Back</button>
-
-        <!-- Button group for edit and delete buttons -->
         <div id="button-group">
-            <!-- Edit button -->
             <button id="edit-btn" onclick="window.location.href = '/edit_vehicle/{{ vehicle.id }}';">Edit</button>
-
-            <!-- Delete button -->
             <form id="delete-form">
                 <input type="hidden" name="id" value="{{ vehicle.id }}">
                 <button id="delete-btn" type="submit">Delete</button>
@@ -86,7 +83,6 @@
         </div>
     </div>
 
-    <!-- Vehicle details -->
     <div class="vehicle-details">
         <h2 class="vehicle-name">{{ vehicle.name }}</h2>
         <p class="detail-label">Color:</p>
@@ -100,22 +96,37 @@
         <p class="detail-label">Note:</p>
         <p class="detail-value">{{ vehicle.note }}</p>
         <p class="detail-label">Car Tax:</p>
-        <p class="detail-value">{{ important_dates.car_tax }}</p>
+        <p class="detail-value">{{ dates.car_tax }}</p>
         <p class="detail-label">Annual Insurance:</p>
-        <p class="detail-value">{{ important_dates.annual_insurance }}</p>
+        <p class="detail-value">{{ dates.annual_insurance }}</p>
         <p class="detail-label">Technical Review:</p>
-        <p class="detail-value">{{ important_dates.technical_review }}</p>
+        <p class="detail-value">{{ dates.technical_review }}</p>
         <p class="detail-label">Vignette:</p>
-        <p class="detail-value">{{ important_dates.vignette }}</p>
+        <p class="detail-value">{{ dates.vignette }}</p>
         <p class="detail-label">Additional Insurance:</p>
-        <p class="detail-value">{{ important_dates.additional_insurance }}</p>
-        <!-- Fuel button -->
+        <p class="detail-value">{{ dates.additional_insurance }}</p>
         <button id="fuel-btn" onclick="window.location.href = '/fuel_vehicle/{{ vehicle.id }}';">Refuel</button>
-        <!-- Important Dates button -->
         <button id="dates-btn" onclick="window.location.href = '/important_dates/{{ vehicle.id }}';">Edit Important Dates</button>
     </div>
 
-    <!-- JavaScript for handling form submission -->
+    <div class="oil-status">
+        <h2 class="vehicle-name">Oil Status</h2>
+        <button id="oil-change-btn" onclick="window.location.href = '/vehicle/{{ vehicle.id }}/oil';">Oil Change</button>
+        {% if warn_oil_change %}
+        <p class="warn-oil-change">Warning: Oil change needed within 500 km!</p>
+        {% endif %}
+        {% if latest_oil_status %}
+        <div>
+            <p class="detail-label">Date of Change:</p>
+            <p class="detail-value">{{ latest_oil_status.date_of_change }}</p>
+            <p class="detail-label">Mileage When Changed:</p>
+            <p class="detail-value">{{ latest_oil_status.mileage_when_changed }}</p>
+            <p class="detail-label">Note:</p>
+            <p class="detail-value">{{ latest_oil_status.note }}</p>
+        </div>
+        {% endif %}
+    </div>
+
     <script>
         document.getElementById('delete-form').addEventListener('submit', function(event) {
             event.preventDefault();

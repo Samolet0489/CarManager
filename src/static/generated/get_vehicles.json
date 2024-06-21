@@ -1,1 +1,85 @@
-[]
+[
+    {
+        "id": 3331585422,
+        "name": "123",
+        "color": "123",
+        "expenses": 123.0,
+        "mileage": 111111.0,
+        "fuel_consumption": 10.1,
+        "note": "123",
+        "important_dates": {
+            "car_tax": "1111-11-11",
+            "annual_insurance": "1111-11-11",
+            "technical_review": "1111-11-11",
+            "vignette": "1111-11-11",
+            "additional_insurance": "1111-11-11"
+        },
+        "oil_statuses": []
+    },
+    {
+        "id": 45586681400,
+        "name": "234",
+        "color": "123234",
+        "expenses": 234.0,
+        "mileage": 234.0,
+        "fuel_consumption": 234.0,
+        "note": "123",
+        "important_dates": {
+            "car_tax": "N/A",
+            "annual_insurance": "N/A",
+            "technical_review": "N/A",
+            "vignette": "N/A",
+            "additional_insurance": "N/A"
+        },
+        "oil_statuses": [
+            {
+                "date_of_change": "2004-11-11",
+                "mileage_when_changed": 234,
+                "note": "lol"
+            }
+        ]
+    },
+    {
+        "id": 48369773571,
+        "name": "123",
+        "color": "123",
+        "expenses": 123.0,
+        "mileage": 123.0,
+        "fuel_consumption": 0.0,
+        "note": "123",
+        "important_dates": {
+            "car_tax": "N/A",
+            "annual_insurance": "N/A",
+            "technical_review": "N/A",
+            "vignette": "N/A",
+            "additional_insurance": "N/A"
+        },
+        "oil_statuses": [
+            {
+                "date_of_change": "2024-06-21",
+                "mileage_when_changed": 23,
+                "note": "This is a note I have good Oil"
+            },
+            {
+                "date_of_change": "0023-12-31",
+                "mileage_when_changed": 123,
+                "note": "well"
+            },
+            {
+                "date_of_change": "0123-11-23",
+                "mileage_when_changed": 123,
+                "note": "123"
+            },
+            {
+                "date_of_change": "0003-12-31",
+                "mileage_when_changed": 123,
+                "note": "12334"
+            },
+            {
+                "date_of_change": "2024-06-28",
+                "mileage_when_changed": 234,
+                "note": "well"
+            }
+        ]
+    }
+]

@@ -7,7 +7,7 @@ from src.database import db
 from .api.vehicleG import vehicle_api
 from .api.mechanicG import mechanic_api
 from .model.refuel_history import RefuelHistory
-from .model.vehicle import Vehicle
+from .model.vehicle import Vehicle, OilStatus
 from .model.important_dates import ImportantDates
 from .model.mechanic import Mechanic
 
@@ -67,9 +67,18 @@ def create_app():
     def vehicle_info(vehicle_id):
         vehicle = Vehicle.query.get(vehicle_id)
         dates = ImportantDates.query.filter_by(vehicle_id=vehicle.id).first()
-        db.session.close()  # this might be a headache
+        latest_oil_status = OilStatus.query.filter_by(vehicle_id=vehicle.id).order_by(
+            OilStatus.date_of_change.desc()).first()
+        db.session.close()
+
+        # Calculate warning if close to next oil change
+        next_oil_change_mileage = latest_oil_status.mileage_when_changed + 5000 if latest_oil_status else None
+        current_mileage = vehicle.mileage
+        warn_oil_change = next_oil_change_mileage and (next_oil_change_mileage - current_mileage <= 500)
+
         if vehicle:
-            return render_template("vehicle_info.html", vehicle=vehicle, important_dates=dates)
+            return render_template("vehicle_info.html", vehicle=vehicle, dates=dates,
+                                   latest_oil_status=latest_oil_status, warn_oil_change=warn_oil_change)
         else:
             return jsonify({'error': 'Vehicle not found'}), 404
 
@@ -266,5 +275,55 @@ def create_app():
         except Exception as e:
             print("Error:", str(e))
             return jsonify({'error': 'Failed to delete mechanic'}), 500
+
+    @app.route('/vehicle/<int:vehicle_id>/oil', methods=['GET', 'POST'])
+    def edit_oil_status(vehicle_id):
+        vehicle = Vehicle.query.get(vehicle_id)
+        if request.method == 'POST':
+            date_of_change = request.form.get('date_of_change')
+            mileage_when_changed = request.form.get('mileage_when_changed')
+            note = request.form.get('note')
+
+            # Validate mileage
+            if int(mileage_when_changed) < vehicle.mileage:
+                error = "Mileage when changed cannot be less than the current mileage."
+                oil_statuses = OilStatus.query.filter_by(vehicle_id=vehicle_id).all()
+                return render_template('edit_oil_status.html', vehicle=vehicle, oil_statuses=oil_statuses, error=error)
+
+            oil_status = OilStatus(vehicle_id=vehicle_id, date_of_change=datetime.strptime(date_of_change, '%Y-%m-%d'),
+                                   mileage_when_changed=int(mileage_when_changed), note=note)
+            db.session.add(oil_status)
+            db.session.commit()
+
+            return redirect(url_for('vehicle_info', vehicle_id=vehicle.id))
+
+        oil_statuses = OilStatus.query.filter_by(vehicle_id=vehicle_id).all()
+        return render_template('edit_oil_status.html', vehicle=vehicle, oil_statuses=oil_statuses)
+
+    @app.route('/vehicle/<int:vehicle_id>/edit_oil/<int:oil_id>', methods=['GET', 'POST'])
+    def edit_specific_oil_status(vehicle_id, oil_id):
+        vehicle = Vehicle.query.get(vehicle_id)
+        oil_status = OilStatus.query.get(oil_id)
+        if request.method == 'POST':
+            date_of_change = request.form.get('date_of_change')
+            mileage_when_changed = request.form.get('mileage_when_changed')
+            note = request.form.get('note')
+
+            # Validate mileage
+            if int(mileage_when_changed) < vehicle.mileage:
+                error = "Mileage when changed cannot be less than the current mileage."
+                return render_template('edit_specific_oil_status.html', vehicle=vehicle, oil_status=oil_status,
+                                       error=error)
+
+            oil_status.date_of_change = datetime.strptime(date_of_change, '%Y-%m-%d')
+            oil_status.mileage_when_changed = int(mileage_when_changed)
+            oil_status.note = note
+            db.session.commit()
+
+
+            return redirect(url_for('edit_oil_status', vehicle_id=vehicle.id))
+
+        return render_template('edit_specific_oil_status.html', vehicle=vehicle, oil_status=oil_status)
+
 
     return app
