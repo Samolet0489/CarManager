@@ -79,7 +79,7 @@
             <button id="edit-btn" onclick="window.location.href = '/edit_vehicle/{{ vehicle.id }}';">Edit</button>
 
             <!-- Delete button -->
-            <form id="delete-form" action="/delete_vehicle" method="POST">
+            <form id="delete-form">
                 <input type="hidden" name="id" value="{{ vehicle.id }}">
                 <button id="delete-btn" type="submit">Delete</button>
             </form>
@@ -114,5 +114,30 @@
         <!-- Important Dates button -->
         <button id="dates-btn" onclick="window.location.href = '/important_dates/{{ vehicle.id }}';">Edit Important Dates</button>
     </div>
+
+    <!-- JavaScript for handling form submission -->
+    <script>
+        document.getElementById('delete-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const vehicleId = document.querySelector('input[name="id"]').value;
+
+            fetch('/delete_vehicle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: vehicleId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    window.location.href = '/vehicles';
+                } else {
+                    alert(data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
 </body>
 </html>

@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_restx import Api
 from datetime import datetime
 import json
+import logging
 from src.database import db
 from .api.vehicleG import vehicle_api
 from .api.mechanicG import mechanic_api
@@ -26,6 +27,8 @@ def create_app():
     # add the vehicle_api to the API this isnt really used accept for some early testing
     api.add_namespace(vehicle_api)
     api.add_namespace(mechanic_api)
+
+    logging.basicConfig(level=logging.DEBUG)
 
     @app.route('/vehicles')
     def index(): #load the defult page for seeing our vehicles
@@ -60,11 +63,11 @@ def create_app():
         # pass vehicles to the template
         return render_template("vehicles.html", vehicles=vehicles_with_dates)
 
-    @app.route('/<vehicle_name>/info')
-    def vehicle_info(vehicle_name):
-        vehicle = Vehicle.query.filter_by(name=vehicle_name).first()
+    @app.route('/vehicle/<int:vehicle_id>/info')
+    def vehicle_info(vehicle_id):
+        vehicle = Vehicle.query.get(vehicle_id)
         dates = ImportantDates.query.filter_by(vehicle_id=vehicle.id).first()
-        db.session.close() # this might be a headache
+        db.session.close()  # this might be a headache
         if vehicle:
             return render_template("vehicle_info.html", vehicle=vehicle, important_dates=dates)
         else:
@@ -87,19 +90,30 @@ def create_app():
             print("Error:", str(e))
             return jsonify({'error': 'Failed to save vehicle data'}), 500
 
-    @app.route('/delete_vehicle', methods=['POST']) # now this works
+    @app.route('/delete_vehicle', methods=['POST'])
     def delete_vehicle():  # a way to remove the vehicles
         try:
-            vehicle_name = request.json.get("name")
-            vehicle = Vehicle.query.filter_by(name=vehicle_name).first()
+            # Check if the request has the correct content type
+            if not request.is_json:
+                return jsonify({'error': 'Content-Type must be application/json'}), 415
+
+            # Parse the JSON data from the request
+            data = request.get_json()
+            vehicle_id = data.get("id")
+            logging.debug(f"Received request to delete vehicle with ID: {vehicle_id}")
+
+            # Query the vehicle by ID
+            vehicle = Vehicle.query.get(vehicle_id)
             if vehicle:
-                # print(f"Attempting to delete vehicle with ID: {vehicle_id}")
+                logging.debug(f"Vehicle found: {vehicle}")
                 vehicle.delete_vehicle()
+                logging.debug("Vehicle deleted successfully")
                 return jsonify({'message': 'Vehicle deleted successfully'}), 200
             else:
+                logging.debug("Vehicle not found")
                 return jsonify({'error': 'Vehicle not found'}), 404
         except Exception as e:
-            # print("Error:", str(e))
+            logging.error(f"Error occurred: {str(e)}", exc_info=True)
             return jsonify({'error': 'Failed to delete vehicle'}), 500
 
     @app.route('/edit_vehicle/<int:vehicle_id>', methods=['GET', 'POST'])
@@ -115,7 +129,7 @@ def create_app():
                 fuel_consumption=data.get("fuel_consumption"),
                 note=data.get("note")
             )
-            return redirect(url_for('vehicle_info', vehicle_name=vehicle.name))
+            return redirect(url_for('vehicle_info', vehicle_id=vehicle.id))
         return render_template("edit_vehicle.html", vehicle=vehicle)
 
     @app.route('/fuel_vehicle/<int:vehicle_id>', methods=['GET', 'POST'])
@@ -176,9 +190,10 @@ def create_app():
                 vignette = request.form.get('vignette')
                 additional_insurance = request.form.get('additional_insurance')
 
-                dates = ImportantDates.update_important_dates(vehicle_id, car_tax, annual_insurance, technical_review, vignette, additional_insurance)
+                dates = ImportantDates.update_important_dates(vehicle_id, car_tax, annual_insurance, technical_review,
+                                                              vignette, additional_insurance)
 
-                return redirect(url_for('vehicle_info', vehicle_name=vehicle.name))
+                return redirect(url_for('vehicle_info', vehicle_id=vehicle.id))
             except ValueError as e:
                 error = str(e)
                 return render_template("important_dates.html", vehicle=vehicle, important_dates=dates, error=error)
@@ -189,6 +204,8 @@ def create_app():
         else:
             return jsonify({'error': 'Vehicle not found'}), 404
 
+
+
     @app.route('/mechanics') #addint something to do with the mechanics coz I said I have to
     def mechanics():
         mechanics_data = Mechanic.get_mechanic()
@@ -198,6 +215,7 @@ def create_app():
     def add_mechanic_form():
         return render_template("add_mechanic.html")
 
+    # Save mechanic
     @app.route('/save_mechanic', methods=['POST'])
     def save_mechanic():
         mechanic_data = request.json

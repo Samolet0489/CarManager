@@ -4,6 +4,14 @@ ensure that the dates work properly and potentially add some logic with the date
 there is still nothing about the OIL!!!!!!
 and then you might think of something cool to do with the mechanics
 
+
+todo:  RUNNING PYTEST DELETES THE DB!!!!!!!!!!! %%%%%%%%%%
+    pytests are set up but results random?!??
+    I am sick of this so I am going to sleep good luck future me
+    everything works great so far. Think if you want to expand on features or testing
+
+ajde leka
+
 ############# Some commands we can use (now my pytests work)
 $env:PYTHONPATH = ".;./src"
 pytest
