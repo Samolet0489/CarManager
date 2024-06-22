@@ -1,0 +1,7 @@
+{
+    "color": "Red",
+    "expenses": 1500.0,
+    "mileage": 15000,
+    "name": "Test Car",
+    "note": "Updated Test Note"
+}
