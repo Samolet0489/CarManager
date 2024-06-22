@@ -2,7 +2,7 @@ import pytest
 from src.app import create_app
 from src.database import db
 from src.model.vehicle import Vehicle
-import time
+from src.api.vehicleG import vehicle_api
 
 @pytest.fixture
 def app():
@@ -19,64 +19,68 @@ def app():
 def client(app):
     return app.test_client()
 
-def test_create_vehicle(client, app):
+@pytest.fixture
+def init_vehicle(app):
+    with app.app_context():
+        vehicle = Vehicle(id=1, name="Test Car", color="Red", expenses=1000.0, mileage=10000, note="Test Note")
+        db.session.add(vehicle)
+        db.session.commit()
+        yield vehicle
+
+def test_create_vehicle(client):
     vehicle_data = {
-        'name': 'Test Car',
-        'color': 'Blue',
-        'expenses': 1000.0,
-        'mileage': 10000,
-        'note': 'Test Note'
+        "name": "New Car",
+        "color": "Blue",
+        "expenses": 1500.0,
+        "mileage": 5000,
+        "note": "Brand new car"
     }
-    response = client.post('/save-vehicle', json=vehicle_data)
+    response = client.post('/vehicle/', json=vehicle_data)
+    assert response.status_code == 201
+    response_json = response.get_json()
+    assert response_json['vehicle']['name'] == "New Car"
+    assert response_json['vehicle']['color'] == "Blue"
+    assert response_json['vehicle']['expenses'] == 1500.0
+    assert response_json['vehicle']['mileage'] == 5000
+    assert response_json['vehicle']['note'] == "Brand new car"
+
+def test_get_vehicles(client, init_vehicle):
+    response = client.get('/vehicle/')
+    assert response.status_code == 200
+    response_json = response.get_json()
+    assert len(response_json['vehicle']) == 1
+    assert response_json['vehicle'][0]['name'] == "Test Car"
+    assert response_json['vehicle'][0]['color'] == "Red"
+    assert response_json['vehicle'][0]['expenses'] == 1000.0
+    assert response_json['vehicle'][0]['mileage'] == 10000
+    assert response_json['vehicle'][0]['note'] == "Test Note"
+
+def test_delete_vehicle(client, init_vehicle):
+    response = client.delete('/vehicle/', query_string={'id': 1})
+    assert response.status_code == 204
+
+    response = client.get('/vehicle/')
+    assert response.status_code == 200
+    response_json = response.get_json()
+    assert len(response_json['vehicle']) == 0
+
+def test_edit_vehicle(client, init_vehicle):
+    edit_data = {
+        "name": "Updated Car",
+        "color": "Green",
+        "expenses": 2000.0,
+        "mileage": 12000,
+        "note": "Updated note"
+    }
+    response = client.put('/vehicle/', json=edit_data, query_string={'id': 1})
     assert response.status_code == 200
 
-    with app.app_context():
-        vehicle = Vehicle.query.filter_by(name='Test Car').first()
-        assert vehicle is not None
-        assert vehicle.name == 'Test Car'
-        assert vehicle.color == 'Blue'
-        assert vehicle.expenses == 1000.0
-        assert vehicle.mileage == 10000
-        assert vehicle.note == 'Test Note'
-
-# def test_update_vehicle(client, app):
-#     vehicle_data = {
-#         'name': 'Test Car',
-#         'color': 'Blue',
-#         'expenses': 1000.0,
-#         'mileage': 10000,
-#         'note': 'Test Note'
-#     }
-#     response = client.post('/save-vehicle', json=vehicle_data)
-#     assert response.status_code == 200
-#
-#     # Verify the vehicle was created correctly
-#     with app.app_context():
-#         vehicle = Vehicle.query.filter_by(name='Test Car').first()
-#         assert vehicle is not None
-#         assert vehicle.color == 'Blue'
-#         assert vehicle.expenses == 1000.0
-#         assert vehicle.mileage == 10000
-#         assert vehicle.note == 'Test Note'
-#
-#     # Update the vehicle
-#     updated_vehicle_data = {
-#         'name': 'Test Car',
-#         'color': 'Red',
-#         'expenses': 1500.0,
-#         'mileage': 15000,
-#         'note': 'Updated Test Note'
-#     }
-#     response = client.post('/save-vehicle', json=updated_vehicle_data)
-#     assert response.status_code == 200
-#
-#     # Verify the vehicle was updated correctly
-#     with app.app_context():
-#         db.session.commit()  # Explicitly commit the session
-#         db.session.expire_all()  # Expire all to ensure the state is reloaded
-#         vehicle = Vehicle.query.filter_by(name='Test Car').first()
-#         assert vehicle is not None
-#         assert vehicle.color == 'Red'
-#         assert vehicle.expenses == 1500.0
-#         assert vehicle.mileage == 15000
-#         assert vehicle.note == 'Updated Test Note'
+    response = client.get('/vehicle/')
+    assert response.status_code == 200
+    response_json = response.get_json()
+    assert len(response_json['vehicle']) == 1
+    assert response_json['vehicle'][0]['name'] == "Updated Car"
+    assert response_json['vehicle'][0]['color'] == "Green"
+    assert response_json['vehicle'][0]['expenses'] == 2000.0
+    assert response_json['vehicle'][0]['mileage'] == 12000
+    assert response_json['vehicle'][0]['note'] == "Updated note"
