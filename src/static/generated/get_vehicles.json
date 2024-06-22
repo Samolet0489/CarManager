@@ -1,1 +1,19 @@
-[]
+[
+    {
+        "id": 1,
+        "name": "Test Car",
+        "color": "Red",
+        "expenses": 1000.0,
+        "mileage": 10000.0,
+        "fuel_consumption": 0.0,
+        "note": "Test Note",
+        "important_dates": {
+            "car_tax": "N/A",
+            "annual_insurance": "N/A",
+            "technical_review": "N/A",
+            "vignette": "N/A",
+            "additional_insurance": "N/A"
+        },
+        "oil_statuses": []
+    }
+]

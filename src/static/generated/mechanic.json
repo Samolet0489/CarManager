@@ -1,1 +1,11 @@
-[]
+[
+    {
+        "id": 1,
+        "name": "Test Mechanic",
+        "address": "123 Test Street",
+        "email": "test@mechanic.com",
+        "phone": "1234567890",
+        "hourly_rate": 50.0,
+        "note": "Test Note"
+    }
+]
