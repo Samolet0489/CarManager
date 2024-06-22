@@ -202,27 +202,28 @@ def test_edit_oil_status(client, app):
     })
     assert response.status_code == 302
 
-# def test_edit_specific_oil_status(client, app):
-#     with app.app_context():
-#         vehicle = Vehicle(id=1, name="Test Car", color="Red", expenses=1000.0, mileage=10000, note="Test Note")
-#         db.session.add(vehicle)
-#         db.session.commit()
-#         oil_status = OilStatus(vehicle_id=1, date_of_change=datetime.datetime.now(), mileage_when_changed=10500, note="Oil change note")
-#         db.session.add(oil_status)
-#         db.session.commit()
-#         oil_id = oil_status.id
-#
-#     response = client.post(f'/vehicle/1/edit_oil/{oil_id}', data={
-#         'date_of_change': '2023-07-01',
-#         'mileage_when_changed': 10600,
-#         'note': 'Updated oil change note'
-#     })
-#     assert response.status_code == 302
-#
-#     with app.app_context():
-#         updated_oil_status = OilStatus.query.get(oil_id)
-#         assert updated_oil_status.date_of_change.date() == datetime.date(2023, 7, 1)  # Compare only the date part
-#         assert updated_oil_status.mileage_when_changed == 10600
-#         assert updated_oil_status.note == 'Updated oil change note'
+def test_edit_specific_oil_status(client, app):
+    with app.app_context():
+        vehicle = Vehicle(id=1, name="Test Car", color="Red", expenses=1000.0, mileage=10000, note="Test Note")
+        db.session.add(vehicle)
+        db.session.commit()
+        oil_status = OilStatus(vehicle_id=1, date_of_change=datetime.datetime.now(), mileage_when_changed=10500, note="Oil change note")
+        db.session.add(oil_status)
+        db.session.commit()
+        oil_id = oil_status.id
+
+    response = client.post(f'/vehicle/1/edit_oil/{oil_id}', data={
+        'date_of_change': '2023-07-01',
+        'mileage_when_changed': 10600,
+        'note': 'Updated oil change note'
+    })
+    assert response.status_code == 302
+
+    with app.app_context():
+        updated_oil_status = OilStatus.query.get(oil_id)
+        assert updated_oil_status.date_of_change == datetime.date(2023, 7, 1)  # Convert to date for comparison
+        assert updated_oil_status.mileage_when_changed == 10600
+        assert updated_oil_status.note == 'Updated oil change note'
+
 
 
