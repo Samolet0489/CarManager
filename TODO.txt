@@ -8,6 +8,15 @@ pytest .\tests\inconsistentGarbage\
 
 #############
 
+230724:
+
+There are some other things that I want to try to do with this project (add more features in the sommer and see how it goes)
+mostly for fun but for that reason I will have to leave some files that are not IN use:
+
+Sir if you are reading this please disregard the files that are not in use:
+theu just contain some preparation for my sommer plans.
+
+
 2207
 
 210724:
