@@ -52,6 +52,7 @@ the backend, SQLAlchemy for database management, and Flask-RESTx for API managem
     ├── .gitignore
     ├── pytest.ini
     ├── requirements.txt
+    ├── start.py
     └── README.md
 
 
@@ -96,7 +97,7 @@ flask db upgrade
 Run the application:
 
 ```bash
-flask run
+python start.py
 ```
 
 Open your browser and navigate to [http://127.0.0.1:5000/vehicles](http://127.0.0.1:5000/vehicles)
@@ -154,6 +155,6 @@ This project is licensed under the MIT License. See the LICENSE file for details
 Code that is not quite cleaned up and etc. Please disregard those as
 In the sommer I am looking forward to implementing some other features and trying things
 with this project. I understand that this leaves a bit of a mess but if the project is used the way it is supposed
-to be it is not noticeable as all the "To be implemented" features are disconneceted from the user (potential customer)
+to be it is not noticeable as all the "To be implemented" features are disconnected from the user (potential customer)
 of the project. 
 
