@@ -148,7 +148,7 @@ This will run all tests in the tests directory and provide you with a summary of
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+This project is licensed under the GPL-3.0 licence. See the LICENSE file for details.
 
 
 ### Pointless files or dead code?!?!?
