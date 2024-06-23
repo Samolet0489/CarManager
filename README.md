@@ -104,16 +104,17 @@ Open your browser and navigate to [http://127.0.0.1:5000/vehicles](http://127.0.
 
 ## Running Tests
 
-Before you start, execute:
-
-```bash
-$env:PYTHONPATH = ".;./src"
-```
+Before you start, make sure your venv is working (check steps above) and execute:
 
 To run the tests, simply execute:
 
 ```bash
 pytest
+```
+
+If it didnt work run this command in the venv and then try again:
+```bash
+$env:PYTHONPATH = ".;./src"
 ```
 
 This will run all tests in the tests directory and provide you with a summary of the test results.
