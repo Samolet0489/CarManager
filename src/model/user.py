@@ -9,9 +9,11 @@ class User (db.Model):
 
         # connect the user to the vehicle table but make it so that every vehicle has its own user
     __tablename__ = 'user'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True, nullable=False)
-    password = db.Column(db.String(80), nullable=False)
+
+    # Define the columns for the user table
+    id = db.Column(db.Integer, primary_key=True) # id for the user (has to be unique)
+    name = db.Column(db.String(80), unique=True, nullable=False)  # name for the  user
+    password = db.Column(db.String(80), nullable=False) # user password
     # this should be enough for our needs
 
     def __init__(self, id:int, name:str, password:str):
@@ -23,10 +25,11 @@ class User (db.Model):
 
         # connect the vehicle table to the user somehow?
 
-
+    # static method to generate a unique user ID
     @staticmethod
     def give_me_id():
         try:
+            # get the existing Ids
             ids = [vehicle.id for vehicle in User.query.all()] # we retrieve the IDs
             # print(ids)
             # print(type(ids[0]))
@@ -46,6 +49,7 @@ class User (db.Model):
         db.session.delete(self)
         db.session.commit()
 
+    # Method to edit user details
     def edit_user(self, id:int, name:str, password:str):
         user = User.query.get(id)
         user.name = name

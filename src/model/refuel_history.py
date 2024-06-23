@@ -2,16 +2,17 @@ from datetime import datetime
 from src.database import db
 
 class RefuelHistory(db.Model):
+    # table name in the database
     __tablename__ = 'refuel_history'
     id = db.Column(db.Integer, primary_key=True)
-    vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=False)
-    amount = db.Column(db.Float, nullable=False)
-    mileage = db.Column(db.Float, nullable=False)
-    price_per_liter = db.Column(db.Float, nullable=False)
-    total_price = db.Column(db.Float, nullable=False)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=False)  # id of the vehicle
+    amount = db.Column(db.Float, nullable=False)  # amount of fuel refueled
+    mileage = db.Column(db.Float, nullable=False)  # mileage at the time of refueling
+    price_per_liter = db.Column(db.Float, nullable=False)  # price per liter of fuel
+    total_price = db.Column(db.Float, nullable=False)  # total price of the refuel
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)  # timestamp of the refuel
 
-    vehicle = db.relationship('Vehicle', back_populates='refuel_history')
+    vehicle = db.relationship('Vehicle', back_populates='refuel_history')  # relationship to the Vehicle table
 
     def __init__(self, vehicle_id, amount, mileage, price_per_liter, total_price):
         self.vehicle_id = vehicle_id
@@ -22,11 +23,11 @@ class RefuelHistory(db.Model):
 
     @classmethod
     def get_fuel_mileage(cls, vehicle_id):
-        # getting all the refuel records for a vehicles (ordered by millage - decreasing)
+        # get all refuel records for a vehicle, ordered by mileage (decreasing)
         refuels = cls.query.filter_by(vehicle_id=vehicle_id).order_by(cls.mileage.desc()).all()
         mileage_data = []
 
-        # calculating the fuel consumption
+        # calculate fuel consumption
         for i in range(len(refuels) - 1):
             current_refuel = refuels[i]
             previous_refuel = refuels[i + 1]
@@ -45,6 +46,7 @@ class RefuelHistory(db.Model):
 
     @classmethod
     def update_refuel(cls, refuel_id, data):
+        # update refuel record
         refuel = cls.query.get(refuel_id)
         if refuel:
             refuel.amount = float(data.get('amount'))
@@ -56,6 +58,7 @@ class RefuelHistory(db.Model):
 
     @classmethod
     def delete_refuel(cls, refuel_id):
+        # delete refuel record
         refuel = cls.query.get(refuel_id)
         if refuel:
             vehicle_id = refuel.vehicle_id

@@ -3,8 +3,10 @@ from flask_restx import Namespace, Resource, fields
 
 from src.model.mechanic import Mechanic
 
+#  namespace for mechanic related operations
 mechanic_api = Namespace("mechanic", description="Mechanic related operations")
 
+# MODELS
 create_mechanic_model = mechanic_api.model('CreateVehicle', {
     "name": fields.String(required=True, example="NAME"),
     "address": fields.String(required=True, example="address of the location"),
@@ -25,6 +27,7 @@ get_mechanic_model = mechanic_api.model('CreateVehicle', {
 })
 
 
+# API Routes
 @mechanic_api.route("/")
 class MechanicList(Resource):
 
@@ -32,8 +35,13 @@ class MechanicList(Resource):
     @mechanic_api.expect(create_mechanic_model, validate=True)
     @mechanic_api.marshal_with(create_mechanic_model, envelope='mechanic')
     def post(self):
+
+        # add a new mechanic to the db
+
+        # make an Id for the mechanic
         id = Mechanic.give_me_id()
 
+        # create a new mechanic
         new_mechanic = Mechanic(id=id,
                                 name=mechanic_api.payload['name'],
                                 address=mechanic_api.payload['address'],
@@ -41,12 +49,17 @@ class MechanicList(Resource):
                                 phone=mechanic_api.payload['phone'],
                                 hourly_rate=mechanic_api.payload['hourly_rate'],
                                 note=mechanic_api.payload['note'])
+
+        # add the mechanic to the database
         Mechanic.add_mechanic(new_mechanic)
         return new_mechanic, 201
 
 
     @mechanic_api.marshal_with(get_mechanic_model, description="getting all mechanics")
     def get(self):
+
+        # get mechanics from the database
+
         mechanics = Mechanic.get_mechanic()
         mechanic_json = [m.dict_data() for m in mechanics]
         return mechanic_json, 200
@@ -57,6 +70,9 @@ class MechanicList(Resource):
     @mechanic_api.response(404, "Mechanic not found")
     @mechanic_api.param('id', "Id for the mechanic to remove")
     def delete(self):
+
+        # remove mechanics from the db
+
         try:
             mechanic_id = int(request.args.get("id"))
             mechanic = Mechanic.query.get(mechanic_id)

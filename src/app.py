@@ -11,6 +11,7 @@ from .model.vehicle import Vehicle, OilStatus
 from .model.important_dates import ImportantDates
 from .model.mechanic import Mechanic
 
+
 def create_app():
     app = Flask(__name__)
 
@@ -18,6 +19,7 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///vehicles.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+    # initialize the database
     db.init_app(app)
     with app.app_context():
         db.create_all()
@@ -28,12 +30,14 @@ def create_app():
     api.add_namespace(vehicle_api)
     api.add_namespace(mechanic_api)
 
+    # configure logging
     logging.basicConfig(level=logging.DEBUG)
 
     @app.route('/vehicles')
     def index(): #load the defult page for seeing our vehicles
         vehicles = Vehicle.get_vehicles()
-        # Fetch important dates for each vehicle
+
+        # fetch important dates for each vehicle
         vehicles_with_dates = []
         for vehicle in vehicles:
             dates = ImportantDates.query.filter_by(vehicle_id=vehicle.id).first()
@@ -65,6 +69,7 @@ def create_app():
 
     @app.route('/vehicle/<int:vehicle_id>/info')
     def vehicle_info(vehicle_id):
+        # get vehicle info by ID
         vehicle = Vehicle.query.get(vehicle_id)
         dates = ImportantDates.query.filter_by(vehicle_id=vehicle.id).first()
         latest_oil_status = OilStatus.query.filter_by(vehicle_id=vehicle.id).order_by(
@@ -88,6 +93,7 @@ def create_app():
 
     @app.route('/save-vehicle', methods=['POST'])
     def save_vehicle():
+        # save vehicle data
         vehicle_data = request.json
         try:
             file_path = 'src/static/generated/create_vehicle.json' # for some reason the scope is so far out
@@ -127,6 +133,7 @@ def create_app():
 
     @app.route('/edit_vehicle/<int:vehicle_id>', methods=['GET', 'POST'])
     def edit_vehicle(vehicle_id):
+        # edit vehicle details
         vehicle = Vehicle.query.get(vehicle_id)
         if request.method == 'POST':
             data = request.form
@@ -143,6 +150,7 @@ def create_app():
 
     @app.route('/fuel_vehicle/<int:vehicle_id>', methods=['GET', 'POST'])
     def fuel_vehicle(vehicle_id):
+        # manage refueling for a vehicle
         vehicle = Vehicle.query.get(vehicle_id)
         if request.method == 'POST':
             try:
@@ -168,6 +176,7 @@ def create_app():
 
     @app.route('/update_refuel/<int:refuel_id>', methods=['GET', 'POST'])
     def update_refuel(refuel_id):
+        # update refuel details
         refuel = RefuelHistory.query.get(refuel_id)
         if request.method == 'POST':
             try:
@@ -182,6 +191,7 @@ def create_app():
 
     @app.route('/delete_refuel/<int:refuel_id>', methods=['POST'])
     def delete_refuel(refuel_id):
+        # delete refuel record
         vehicle_id = RefuelHistory.delete_refuel(refuel_id)
         if vehicle_id:
             return redirect(url_for('fuel_vehicle', vehicle_id=vehicle_id))
@@ -190,6 +200,7 @@ def create_app():
 
     @app.route('/important_dates/<int:vehicle_id>', methods=['GET', 'POST'])
     def important_dates_route(vehicle_id):
+        # manage important dates for a vehicle
         vehicle = Vehicle.query.get(vehicle_id)
         if request.method == 'POST':
             try:
@@ -217,16 +228,19 @@ def create_app():
 
     @app.route('/mechanics') #addint something to do with the mechanics coz I said I have to
     def mechanics():
+        # load the mechanics page
         mechanics_data = Mechanic.get_mechanic()
         return render_template("mechanics.html", mechanics=mechanics_data)
 
     @app.route('/add_mechanic')
     def add_mechanic_form():
+        # load the page for adding a mechanic
         return render_template("add_mechanic.html")
 
     # Save mechanic
     @app.route('/save_mechanic', methods=['POST'])
     def save_mechanic():
+        # save mechanic data
         mechanic_data = request.json
         try:
             new_mechanic = Mechanic(
@@ -246,6 +260,7 @@ def create_app():
 
     @app.route('/edit_mechanic/<int:mechanic_id>', methods=['GET', 'POST'])
     def edit_mechanic(mechanic_id):
+        # edit mechanic details
         mechanic = Mechanic.query.get(mechanic_id)
         if request.method == 'POST':
             mechanic_data = request.json
@@ -265,6 +280,7 @@ def create_app():
 
     @app.route('/delete_mechanic/<int:mechanic_id>', methods=['POST'])
     def delete_mechanic(mechanic_id):
+        # delete a mechanic
         try:
             mechanic = Mechanic.query.get(mechanic_id)
             if mechanic:
@@ -278,6 +294,7 @@ def create_app():
 
     @app.route('/vehicle/<int:vehicle_id>/oil', methods=['GET', 'POST'])
     def edit_oil_status(vehicle_id):
+        # manage oil status for a vehicle
         vehicle = Vehicle.query.get(vehicle_id)
         if request.method == 'POST':
             date_of_change = request.form.get('date_of_change')
@@ -302,6 +319,7 @@ def create_app():
 
     @app.route('/vehicle/<int:vehicle_id>/edit_oil/<int:oil_id>', methods=['GET', 'POST'])
     def edit_specific_oil_status(vehicle_id, oil_id):
+        # edit specific oil status for a vehicle
         vehicle = Vehicle.query.get(vehicle_id)
         oil_status = OilStatus.query.get(oil_id)
         if request.method == 'POST':

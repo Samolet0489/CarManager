@@ -7,6 +7,7 @@ from .refuel_history import RefuelHistory
 from .important_dates import ImportantDates
 from flask import jsonify
 
+# namespace for vehicle-related operations
 frontendVehicle = Namespace('vehicle', description='Vehicle related operations')
 
 # adding a model so that I can send the data to the
@@ -30,6 +31,7 @@ class Vehicle(db.Model):
     fuel_consumption = db.Column(db.Float, nullable=False)
     note = db.Column(db.String(500), nullable=True)
 
+    # relationships
     refuel_history = db.relationship('RefuelHistory', back_populates='vehicle')
     important_dates = db.relationship('ImportantDates', back_populates='vehicle', uselist=False)
     oil_statuses = db.relationship('OilStatus', back_populates='vehicle')
@@ -40,10 +42,10 @@ class Vehicle(db.Model):
         self.color = color  # people can set the exact color of the vehicle (in case of an accident the mechanic knows the paint)
         self.expenses = expenses  # total expenses (just adding up all expenses ever accumulated)
         self.mileage = mileage
-        self.fuel_consumption = 0  # TODO: now just needs to be added to the "fill up" method in vehicleG
-        self.note = note  # people can write a note with additional information about the car
-        # feel free to add other info
+        self.fuel_consumption = 0  # default fuel consumption
+        self.note = note  # additional notes
 
+    # convert vehicle data to a dictionary
     def dict_data(self):
         important_dates_data = ImportantDates.query.filter_by(vehicle_id=self.id).first()
         oil_statuses_data = OilStatus.query.filter_by(vehicle_id=self.id).all()
@@ -72,6 +74,7 @@ class Vehicle(db.Model):
             ]
         }
 
+    # generate a unique ID for a new vehicle
     @staticmethod
     def give_me_id():
         try:
@@ -84,10 +87,12 @@ class Vehicle(db.Model):
             print("Error:", e)
             return 0
 
+    # add a vehicle to the database
     def add_vehicle(self):
         db.session.add(self)
         db.session.commit()
 
+    # get all vehicles
     @staticmethod
     def get_vehicles():
         data = Vehicle.query.all()
@@ -96,10 +101,12 @@ class Vehicle(db.Model):
             f.write(json.dumps(vehicles_json, indent=4))
         return data
 
+    # update fuel consumption
     def _fuel_consumption(self, fuel: float, mileage: float, current_mileage: float):
         self.fuel_consumption = (fuel / (current_mileage - mileage)) * 100 if current_mileage != mileage else 0
         self.mileage = current_mileage
 
+    # add vehicle data to the database from JSON
     def add_vehicle_to_db(self):
         with open("./src/static/generated/create_vehicle.json", "r") as f:
             data = f.read()
@@ -117,17 +124,18 @@ class Vehicle(db.Model):
         db.session.add(new_vehicle)
         db.session.commit()
 
+    # Delete a vehicle and its ASSOCIATED records!!!
     def delete_vehicle(self):
-        # Delete all associated refuel history records
+        # delete all associated refuel history records
         RefuelHistory.query.filter_by(vehicle_id=self.id).delete()
-        # Delete all associated important dates records
+        # delete all associated important dates records
         ImportantDates.query.filter_by(vehicle_id=self.id).delete()
-        # Delete all associated oil status records
+        # delete all associated oil status records
         OilStatus.query.filter_by(vehicle_id=self.id).delete()
         db.session.delete(self)
         db.session.commit()
 
-
+    # edit vehicle details
     def edit_vehicle(self, name: Optional[str] = None, color: Optional[str] = None, expenses: Optional[float] = None, mileage: Optional[float] = None, fuel_consumption: Optional[float] = None, note: Optional[str] = None):
         if name is not None:
             self.name = name
@@ -177,6 +185,7 @@ class Vehicle(db.Model):
         db.session.add(new_refuel)
         db.session.commit()
 
+    # get refuel history for the vehicle
     def get_refuel_history(self):
         return RefuelHistory.query.filter_by(vehicle_id=self.id).all()
 
@@ -202,4 +211,5 @@ class OilStatus(db.Model):
         self.date_of_change = date_of_change
         self.mileage_when_changed = mileage_when_changed
         self.note = note
+
 

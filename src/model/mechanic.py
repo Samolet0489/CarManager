@@ -4,16 +4,15 @@ from random import randint
 from src.database import db
 
 class Mechanic(db.Model):
-
-    # making a table for the mechanic
+    # table name in the database
     __tablename__ = 'mechanic'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80),  nullable=False)
-    address = db.Column(db.String(80),  nullable=False)
-    email = db.Column(db.String(80),  nullable=False)
-    phone = db.Column(db.String(80),  nullable=False)
-    hourly_rate = db.Column(db.Float, nullable=False)
-    note = db.Column(db.Text, nullable=True) # this is changed from the originally submitted as it made no sence to have it
+    name = db.Column(db.String(80), nullable=False)  # mechanic's name
+    address = db.Column(db.String(80), nullable=False)  # mechanic's address
+    email = db.Column(db.String(80), nullable=False)  # mechanic's email
+    phone = db.Column(db.String(80), nullable=False)  # mechanic's phone number
+    hourly_rate = db.Column(db.Float, nullable=False)  # mechanic's hourly rate
+    note = db.Column(db.Text, nullable=True)  # additional notes about the mechanic
 
 
     def __init__(self, id:int, name:str, address:str,email:str, phone:str, hourly_rate:float, note:str):
@@ -24,14 +23,10 @@ class Mechanic(db.Model):
         self.phone = phone
         self.hourly_rate = hourly_rate
         self.note = note
-        #better add contacts or smth rather than when he is busy coz we will have to call him to decide if he is busy or not
-        # the app has no way to know that accept ofc if the mechanic is not dependent on the app (was not planning on that)
-
-
-        # add more if needed but dont forget to add them in the db if you do
-
+        # consider adding contacts instead of checking availability through the app
 
     def dict_data(self):
+        # convert mechanic details to dictionary format
         return {
             'id': self.id,
             'name': self.name,
@@ -58,24 +53,29 @@ class Mechanic(db.Model):
 
 
     def add_mechanic(self):
+        # add a new mechanic to the database
         db.session.add(self)
         db.session.commit()
 
     @staticmethod
-    def get_mechanic(): #I will most likely have to get a specific mechanic
+    def get_mechanic():
+        # retrieve all mechanics from the database
         data = Mechanic.query.all()
         mechanic_json = [m.dict_data() for m in data]
 
+        # save mechanic data to a JSON file
         with open("src/static/generated/mechanic.json", "w") as f:
             f.write(json.dumps(mechanic_json, indent=4))
 
         return data
 
     def delete_mechanic(self):
+        # delete a mechanic from the database
         db.session.delete(self)
         db.session.commit()
 
     def get_mechanic_id(self, id):
+        # retrieve a specific mechanic by ID
         data = Mechanic.query.filter_by(id=id).first()
         return data
 
