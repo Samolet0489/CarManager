@@ -1,30 +1,20 @@
 
-current active link for the app:
+# Vehicle Management System
 
-http://127.0.0.1:5000/vehicles
+The Vehicle Management System is a web application designed to manage and maintain information about vehicles, 
+including their fuel history, important dates, oil status, and associated mechanics. This project utilizes Flask for 
+the backend, SQLAlchemy for database management, and Flask-RESTx for API management. The frontend is built using HTML and CSS.
 
+## Features
 
+- Add, edit, and delete vehicles.
+- Record and update fuel refueling history.
+- Maintain important dates related to each vehicle (e.g., car tax, insurance, technical review).
+- Record and update oil change statuses.
+- Manage information about associated mechanics.
 
-When doing the pytests remember to run this:
+## Directory Structure
 
-$env:PYTHONPATH = ".;./src"
-pytest
-
-
-
-Vehicle Management System
-Overview
-
-The Vehicle Management System is a web application designed to manage and maintain information about vehicles, including their fuel history, important dates, oil status, and associated mechanics. This project utilizes Flask for the backend, SQLAlchemy for database management, and Flask-RESTx for API management. The frontend is built using HTML and CSS.
-Features
-
-    Add, edit, and delete vehicles.
-    Record and update fuel refueling history.
-    Maintain important dates related to each vehicle (e.g., car tax, insurance, technical review).
-    Record and update oil change statuses.
-    Manage information about associated mechanics.
-
-Directory Structure
 
     .
     ├── src/
@@ -64,46 +54,40 @@ Directory Structure
     ├── requirements.txt
     └── README.md
 
-Installation
-Prerequisites
 
-    Python 3.12.4 or higher
-    Virtualenv
+## Installation
 
-Steps
+### Prerequisites
+
+- Python 3.12.4 or higher
+- Virtualenv
+
+### Steps
 
 Clone the repository:
 
-
-
-```
+```bash
 git clone https://github.com/yourusername/vehicle-management-system.git
 cd vehicle-management-system
 ```
 
-
-
 Create a virtual environment and activate it:
 
-```
+```bash
 python -m venv .venv
 .venv\Scripts\activate  # On Windows
 source .venv/bin/activate  # On Unix or MacOS
-
 ```
-
 
 Install the required dependencies:
 
-
-```
+```bash
 pip install -r requirements.txt
 ```
 
+Set up the database (sometimes this step can be skipped):
 
-Set up the database:
-
-```
+```bash
 flask db init
 flask db migrate -m "Initial migration."
 flask db upgrade
@@ -111,52 +95,55 @@ flask db upgrade
 
 Run the application:
 
-    flask run
-
-    Open your browser and navigate to http://127.0.0.1:5000/vehicles
-
-Running Tests
-
-Before you start execute:
-
-    $env:PYTHONPATH = ".;./src"
-
-And then to run the tests, simply execute:
-
+```bash
+flask run
 ```
+
+Open your browser and navigate to [http://127.0.0.1:5000/vehicles](http://127.0.0.1:5000/vehicles)
+
+## Running Tests
+
+Before you start, execute:
+
+```bash
+$env:PYTHONPATH = ".;./src"
+```
+
+To run the tests, simply execute:
+
+```bash
 pytest
 ```
 
 This will run all tests in the tests directory and provide you with a summary of the test results.
-API Endpoints
 
-The following endpoints are available:
-Vehicle API
+## API Endpoints
 
-    POST /api/vehicle/ - Create a new vehicle
-    GET /api/vehicle/ - Get all vehicles
-    PUT /api/vehicle/<id> - Update a vehicle
-    DELETE /api/vehicle/<id> - Delete a vehicle
+### Vehicle API
 
-Mechanic API
+- `POST /api/vehicle/` - Create a new vehicle
+- `GET /api/vehicle/` - Get all vehicles
+- `PUT /api/vehicle/<id>` - Update a vehicle
+- `DELETE /api/vehicle/<id>` - Delete a vehicle
 
-    POST /api/mechanic/ - Create a new mechanic
-    GET /api/mechanic/ - Get all mechanics
-    DELETE /api/mechanic/<id> - Delete a mechanic
+### Mechanic API
 
-Frontend Pages
+- `POST /api/mechanic/` - Create a new mechanic
+- `GET /api/mechanic/` - Get all mechanics
+- `DELETE /api/mechanic/<id>` - Delete a mechanic
 
-    /vehicles - View all vehicles
-    /vehicle/<id>/info - View vehicle information
-    /add - Add a new vehicle
-    /edit_vehicle/<id> - Edit vehicle details
-    /fuel_vehicle/<id> - View and update fuel history
-    /update_refuel/<id> - Update a specific refuel entry
-    /important_dates/<id> - View and edit important dates
-    /mechanics - View all mechanics
-    /add_mechanic - Add a new mechanic
+## Frontend Pages
 
-License
+- `/vehicles` - View all vehicles
+- `/vehicle/<id>/info` - View vehicle information
+- `/add` - Add a new vehicle
+- `/edit_vehicle/<id>` - Edit vehicle details
+- `/fuel_vehicle/<id>` - View and update fuel history
+- `/update_refuel/<id>` - Update a specific refuel entry
+- `/important_dates/<id>` - View and edit important dates
+- `/mechanics` - View all mechanics
+- `/add_mechanic` - Add a new mechanic
+
+## License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
-Contact
